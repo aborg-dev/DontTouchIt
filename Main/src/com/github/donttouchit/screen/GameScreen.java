@@ -42,8 +42,19 @@ public class GameScreen extends BasicScreen {
 		final CircleActor circleActor = new CircleActor(30);
 		circleActor.addListener(new ActorGestureListener() {
 			@Override
+			public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				circleActor.isHolded = true;
+			}
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				circleActor.isHolded = false;
+			}
+
+			@Override
 			public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
 				circleActor.translate(deltaX, deltaY);
+				circleActor.velocity.set(deltaX * 30, deltaY * 30);
 			}
 		});
 
