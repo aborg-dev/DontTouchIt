@@ -1,17 +1,18 @@
 package com.github.donttouchit.actor;
 
-public class LevelObject {
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+public class LevelObject extends Actor {
 	private Level level;
-	private boolean visible = false;
-	private int x = 0, y = 0;
+	private int column = 0, row = 0;
 
 	public LevelObject(Level level) {
 		this.level = level;
 	}
 
-	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public void setPosition(int column, int row) {
+		this.column = column;
+		this.row = row;
 	}
 
 	public Level getLevel() {
@@ -22,27 +23,19 @@ public class LevelObject {
 		this.level = level;
 	}
 
-	public boolean isVisible() {
-		return visible;
+	public int getColumn() {
+		return column;
 	}
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
+	public void setColumn(int column) {
+		this.column = column;
 	}
 
-	public int getX() {
-		return x;
+	public int getRow() {
+		return row;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
+	public void setRow(int row) {
+		this.row = row;
 	}
 }
