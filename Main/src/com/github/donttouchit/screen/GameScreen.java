@@ -1,27 +1,17 @@
 package com.github.donttouchit.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.github.donttouchit.actor.Ball;
-import com.github.donttouchit.actor.CircleActor;
 import com.github.donttouchit.actor.HeavyBall;
 import com.github.donttouchit.actor.Level;
 import com.github.donttouchit.actor.properties.Dye;
 import com.github.donttouchit.geom.Direction;
 
-/**
- * User: iiotep9huy
- * Date: 9/5/13
- * Time: 8:09 PM
- * Project: Don'tTouchIt
- */
 public class GameScreen extends BasicScreen {
-
 	private Stage stage;
 	private Level level;
 	private Ball ball;
@@ -47,16 +37,14 @@ public class GameScreen extends BasicScreen {
 		level = new Level(5, 5);
 		ball = new HeavyBall(level, Dye.RED);
 		stage.addActor(level);
-
-//		level.addActor(ball);
+		level.addActor(ball);
 
 		final Ball cBall = ball;
-		System.err.println("Adding input listner!");
+		System.err.println("Adding input listener!");
 		ball.addListener(new ActorGestureListener() {
 			@Override
 			public void tap(InputEvent event, float x, float y, int count, int button) {
 				System.err.println("Tapped!");
-
 			}
 
 			@Override
@@ -71,30 +59,6 @@ public class GameScreen extends BasicScreen {
 				ball.move(direction);
 			}
 		});
-
-		stage.addActor(ball);
-
-
-//		final CircleActor circleActor = new CircleActor(30);
-//		circleActor.addListener(new ActorGestureListener() {
-//			@Override
-//			public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//				circleActor.isHolded = true;
-//			}
-//
-//			@Override
-//			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-//				circleActor.isHolded = false;
-//			}
-//
-//			@Override
-//			public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
-//				circleActor.translate(deltaX, deltaY);
-//				circleActor.velocity.set(deltaX * 30, deltaY * 30);
-//			}
-//		});
-//
-//		stage.addActor(circleActor);
 	}
 
 	@Override
@@ -108,5 +72,9 @@ public class GameScreen extends BasicScreen {
 	protected void update(float delta) {
 		super.update(delta);
 		stage.act(delta);
+
+		float x = (Gdx.graphics.getWidth() - level.getWidth()) / 2;
+		float y = (Gdx.graphics.getHeight() - level.getHeight()) / 2;
+		level.setPosition(x, y);
 	}
 }

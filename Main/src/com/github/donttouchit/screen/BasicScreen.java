@@ -2,12 +2,6 @@ package com.github.donttouchit.screen;
 
 import com.badlogic.gdx.Screen;
 
-/**
- * User: iiotep9huy
- * Date: 9/5/13
- * Time: 8:06 PM
- * Project: Don'tTouchIt
- */
 public abstract class BasicScreen implements Screen {
 
 	protected void draw() {
@@ -25,17 +19,14 @@ public abstract class BasicScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override
 	public void show() {
-		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override
 	public void hide() {
-		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	@Override
