@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class Level extends Group {
@@ -20,8 +21,21 @@ public final class Level extends Group {
 		this.columns = columns;
 		this.rows = rows;
 		passable = new boolean[columns][rows];
+		for (int i = 0; i < columns; ++i) {
+			Arrays.fill(passable[i], true);
+		}
 		setWidth(columns * CELL_SIZE);
 		setHeight(rows * CELL_SIZE);
+	}
+
+	public boolean isOnBoard(int column, int row) {
+		if (column < 0 || row < 0) {
+			return false;
+		}
+		if (column >= columns || row >= rows) {
+			return false;
+		}
+		return true;
 	}
 
 	public boolean isPassable(int column, int row) {
@@ -33,6 +47,10 @@ public final class Level extends Group {
 	}
 
 	public boolean isEmpty(int column, int row) {
+		System.err.println("Checking " + column + " " + row);
+		if (!isOnBoard(column, row)) {
+			return false;
+		}
 		if (!isPassable(column, row)) {
 			return false;
 		}

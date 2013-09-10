@@ -6,7 +6,7 @@ import com.github.donttouchit.geom.Direction;
 
 public abstract class Ball extends LevelObject {
 	private float dx = 0, dy = 0;
-	private float speedInCells = 1.0f;
+	private float speedInCells = 3.0f;
 	private Direction moveDirection = Direction.NONE;
 	private Dye dye;
 
@@ -24,6 +24,13 @@ public abstract class Ball extends LevelObject {
 
 			dx = Math.min(dx + dir.x, 1);
 			dy = Math.min(dy + dir.y, 1);
+
+			if (!level.isEmpty(getColumn() + (int)Math.signum(dx), getRow() + (int)Math.signum(dy))) {
+				dx = 0;
+				dy = 0;
+				moveDirection = Direction.NONE;
+				return;
+			}
 
 			if (Math.abs((int)dx) == 1 || Math.abs((int)dy) == 1) {
 				setColumn(getColumn() + (int)dx);

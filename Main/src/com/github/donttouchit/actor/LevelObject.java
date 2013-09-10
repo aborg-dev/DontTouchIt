@@ -3,8 +3,8 @@ package com.github.donttouchit.actor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class LevelObject extends Actor {
-	private Level level;
-	private int column = 0, row = 0;
+	protected Level level;
+	protected int column = 0, row = 0;
 
 	public LevelObject(Level level) {
 		this.level = level;
