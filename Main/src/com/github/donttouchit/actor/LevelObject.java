@@ -10,9 +10,9 @@ public class LevelObject extends Actor {
 		this.level = level;
 	}
 
-	public void setPosition(int column, int row) {
-		this.column = column;
-		this.row = row;
+	public void setBoardPosition(int column, int row) {
+		setColumn(column);
+		setRow(row);
 	}
 
 	public Level getLevel() {
@@ -29,6 +29,7 @@ public class LevelObject extends Actor {
 
 	public void setColumn(int column) {
 		this.column = column;
+		setX(this.column * level.cellSize);
 	}
 
 	public int getRow() {
@@ -37,5 +38,6 @@ public class LevelObject extends Actor {
 
 	public void setRow(int row) {
 		this.row = row;
+		setY(this.row * level.cellSize);
 	}
 }

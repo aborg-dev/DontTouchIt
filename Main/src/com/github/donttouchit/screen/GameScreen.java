@@ -46,51 +46,55 @@ public class GameScreen extends BasicScreen {
 		stage = new Stage();
 		level = new Level(5, 5);
 		ball = new HeavyBall(level, Dye.RED);
-
+		stage.addActor(level);
 
 //		level.addActor(ball);
 
 		final Ball cBall = ball;
-		System.err.println("Hello, mudak!");
+		System.err.println("Adding input listner!");
 		ball.addListener(new ActorGestureListener() {
 			@Override
 			public void tap(InputEvent event, float x, float y, int count, int button) {
-				System.err.println("Hello, mudak!");
+				System.err.println("Tapped!");
 
 			}
-		});
 
-		ball.addListener(new InputListener() {
 			@Override
-			public boolean keyDown(InputEvent event, int keycode) {
-				System.err.println("Key typed!");
-				return super.keyDown(event, keycode);
+			public void fling(InputEvent event, float velocityX, float velocityY, int button) {
+				System.err.println("Flinged! " + velocityX + " " + velocityY);
+				Direction direction;
+				if (Math.abs(velocityX) > Math.abs(velocityY)) {
+					direction = velocityX > 0 ? Direction.RIGHT : Direction.LEFT;
+				} else {
+					direction = velocityY > 0 ? Direction.TOP : Direction.BOTTOM;
+				}
+				ball.move(direction);
 			}
 		});
 
 		stage.addActor(ball);
 
 
-		final CircleActor circleActor = new CircleActor(30);
-		circleActor.addListener(new ActorGestureListener() {
-			@Override
-			public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				circleActor.isHolded = true;
-			}
-
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				circleActor.isHolded = false;
-			}
-
-			@Override
-			public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
-				circleActor.translate(deltaX, deltaY);
-				circleActor.velocity.set(deltaX * 30, deltaY * 30);
-			}
-		});
-
-		stage.addActor(circleActor);
+//		final CircleActor circleActor = new CircleActor(30);
+//		circleActor.addListener(new ActorGestureListener() {
+//			@Override
+//			public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//				circleActor.isHolded = true;
+//			}
+//
+//			@Override
+//			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//				circleActor.isHolded = false;
+//			}
+//
+//			@Override
+//			public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
+//				circleActor.translate(deltaX, deltaY);
+//				circleActor.velocity.set(deltaX * 30, deltaY * 30);
+//			}
+//		});
+//
+//		stage.addActor(circleActor);
 	}
 
 	@Override
@@ -104,10 +108,5 @@ public class GameScreen extends BasicScreen {
 	protected void update(float delta) {
 		super.update(delta);
 		stage.act(delta);
-
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			ball.move(Direction.RIGHT);
-			System.err.println("Hello, mudak!");
-		}
 	}
 }

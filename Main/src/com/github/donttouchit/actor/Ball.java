@@ -19,6 +19,7 @@ public abstract class Ball extends LevelObject {
 	public void act(float delta) {
 		super.act(delta);
 		if (moveDirection != Direction.NONE) {
+//			System.err.println(getX() + " " + getY());
 			Vector2 dir = moveDirection.getVector2();
 			dir.scl(speedInCells * delta);
 			dx = Math.min(dx + dir.x, 1);
@@ -26,8 +27,7 @@ public abstract class Ball extends LevelObject {
 			if (Math.abs((int)dx) == 1 || Math.abs((int)dy) == 1) {
 				setColumn(getColumn() + (int)dx);
 				setRow(getRow() + (int)dy);
-				System.err.println((int)dx + " " + (int)dy);
-
+//				System.err.println((int)dx + " " + (int)dy);
 				dx = 0;
 				dy = 0;
 				moveDirection = Direction.NONE;

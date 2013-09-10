@@ -10,8 +10,8 @@ public class HeavyBall extends Ball {
 
 	public HeavyBall(Level level, Dye dye) {
 		super(level, dye);
-		setWidth(80);
-		setHeight(80);
+		setWidth(R * 2);
+		setHeight(R * 2);
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class HeavyBall extends Ball {
 		shapeRenderer.translate(getX(), getY(), 0);
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		shapeRenderer.setColor(1.0f, 0, 0, 1.0f);
-		shapeRenderer.circle((getDx() * 2 + getColumn() * 2 + 1) * R, (getDy() * 2 + getRow() * 2 + 1) * R, R);
+		shapeRenderer.circle((getDx() * 2 + 1) * R, (getDy() * 2 + 1) * R, R);
 		shapeRenderer.end();
 
 		batch.begin();
