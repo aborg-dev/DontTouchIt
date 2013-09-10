@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.github.donttouchit.actor.Ball;
@@ -57,8 +58,14 @@ public class GameScreen extends BasicScreen {
 				System.err.println("Hello, mudak!");
 
 			}
+		});
 
-
+		ball.addListener(new InputListener() {
+			@Override
+			public boolean keyDown(InputEvent event, int keycode) {
+				System.err.println("Key typed!");
+				return super.keyDown(event, keycode);
+			}
 		});
 
 		stage.addActor(ball);
