@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.github.donttouchit.actor.properties.Dye;
 import com.github.donttouchit.geom.Direction;
 
+import java.awt.*;
+
 public abstract class Ball extends LevelObject {
 	private float dx = 0, dy = 0;
 	private float speedInCells = 3.0f;
@@ -18,29 +20,38 @@ public abstract class Ball extends LevelObject {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+
 		if (moveDirection != Direction.NONE) {
 			Vector2 dir = moveDirection.getVector2();
 			dir.scl(speedInCells * delta);
 
-			dx = Math.min(dx + dir.x, 1);
-			dy = Math.min(dy + dir.y, 1);
+			dx += dir.x;
+			dy += dir.y;
 
-			if (!level.isEmpty(getColumn() + (int)Math.signum(dx), getRow() + (int)Math.signum(dy))) {
-				dx = 0;
-				dy = 0;
-				moveDirection = Direction.NONE;
-				return;
-			}
+			if (Math.abs(dx) >= 1 || Math.abs(dy) >= 1) {
+				if (Math.abs(dx) >= 1) {
+					setColumn(getColumn() + (int)Math.signum(dx));
+					dx -= Math.signum(dx);
+				}
+				if (Math.abs(dy) >= 1) {
+					setRow(getRow() + (int)Math.signum(dy));
+					dy -= Math.signum(dy);
+				}
 
-			if (Math.abs((int)dx) == 1 || Math.abs((int)dy) == 1) {
-				setColumn(getColumn() + (int)dx);
-				setRow(getRow() + (int)dy);
-
-				dx = 0;
-				dy = 0;
-				moveDirection = Direction.NONE;
+				if (!mayMove(getMoveDirection())) {
+					stop();
+				}
 			}
 		}
+	}
+
+	protected boolean mayMove(Direction direction) {
+		if (direction == Direction.NONE) {
+			return true;
+		}
+		Point p = direction.getPoint();
+		p.translate(getColumn(), getRow());
+		return level.isEmpty(p.x, p.y);
 	}
 
 	public Vector2 getCenter() {
@@ -67,8 +78,14 @@ public abstract class Ball extends LevelObject {
 		return moveDirection;
 	}
 
+	public void stop() {
+		moveDirection = Direction.NONE;
+		dx = 0;
+		dy = 0;
+	}
+
 	public void move(Direction moveDirection) {
-		if (this.moveDirection == Direction.NONE) {
+		if (this.moveDirection == Direction.NONE && mayMove(moveDirection)) {
 			this.moveDirection = moveDirection;
 		}
 	}

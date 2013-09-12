@@ -2,6 +2,8 @@ package com.github.donttouchit.actor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import java.awt.*;
+
 public class LevelObject extends Actor {
 	protected Level level;
 	protected int column = 0, row = 0;
@@ -15,6 +17,10 @@ public class LevelObject extends Actor {
 	public void setBoardPosition(int column, int row) {
 		setColumn(column);
 		setRow(row);
+	}
+
+	public Point getBoardPosition() {
+		return new Point(column, row);
 	}
 
 	public boolean isPassable(int column, int row) {
