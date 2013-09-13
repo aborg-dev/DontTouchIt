@@ -16,6 +16,12 @@ public class HeavyBall extends Ball {
 		super(level, dye);
 	}
 
+	public HeavyBall(Level level, Dye dye, int column, int row) {
+		this(level, dye);
+		setColumn(column);
+		setRow(row);
+	}
+
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);

@@ -12,8 +12,6 @@ import com.github.donttouchit.geom.Direction;
 public class GameScreen extends BasicScreen {
 	private Stage stage;
 	private Level level;
-	private Ball ball;
-	private Hole hole;
 
 	@Override
 	public void resize(int width, int height) {
@@ -34,12 +32,16 @@ public class GameScreen extends BasicScreen {
 	public GameScreen() {
 		stage = new Stage();
 		level = new Level(10, 10);
-		ball = new HeavyBall(level, Dye.RED);
-		hole = new Hole(level, Dye.RED, 3, 3);
+		Ball redBall = new HeavyBall(level, Dye.RED, 1, 1);
+		Ball blueBall = new HeavyBall(level, Dye.BLUE, 1, 5);
+		Hole redHole = new Hole(level, Dye.RED, 3, 3);
+		Hole blueHole = new Hole(level, Dye.BLUE, 7, 4);
 		Board board = new Board(level);
 		level.addLevelObject(board);
-		level.addLevelObject(hole);
-		level.addLevelObject(ball);
+		level.addLevelObject(redHole);
+		level.addLevelObject(blueHole);
+		level.addLevelObject(redBall);
+		level.addLevelObject(blueBall);
 		stage.addActor(level.getGroup());
 	}
 
