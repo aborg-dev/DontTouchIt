@@ -41,7 +41,7 @@ public class LevelObject extends Actor {
 
 	public void setColumn(int column) {
 		this.column = column;
-		setX(this.column * level.CELL_SIZE);
+		setX(this.column * Level.CELL_SIZE);
 	}
 
 	public int getRow() {
@@ -50,6 +50,6 @@ public class LevelObject extends Actor {
 
 	public void setRow(int row) {
 		this.row = row;
-		setY(this.row * level.CELL_SIZE);
+		setY(this.row * Level.CELL_SIZE);
 	}
 }

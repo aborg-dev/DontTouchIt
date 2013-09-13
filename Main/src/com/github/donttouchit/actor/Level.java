@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.github.donttouchit.actor.properties.Dye;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +43,7 @@ public final class Level {
 
 	public void addLevelObject(LevelObject levelObject) {
 		group.addActor(levelObject);
+		levelObjects.add(levelObject);
 	}
 
 	public Group getGroup() {
@@ -79,6 +82,17 @@ public final class Level {
 			}
 		}
 		return true;
+	}
+
+	public Dye getDye(int column, int row) {
+		for (LevelObject levelObject : levelObjects) {
+			if (levelObject.getBoardPosition().equals(new Point(column, row))) {
+				if (levelObject instanceof Hole) {
+					return ((Hole) levelObject).getDye();
+				}
+			}
+		}
+		return null;
 	}
 
 	public int getColumns() {

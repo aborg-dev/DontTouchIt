@@ -9,8 +9,8 @@ public enum Dye {
 
 	private static final Color[] color = {
 		new Color(1, 0, 0, 1),
-		new Color(1, 0, 0, 1),
-		new Color(1, 0, 0, 1)
+		new Color(0, 1, 0, 1),
+		new Color(0, 0, 1, 1)
 	};
 
 	public Color getColor() {

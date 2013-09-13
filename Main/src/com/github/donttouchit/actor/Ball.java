@@ -12,7 +12,7 @@ public abstract class Ball extends LevelObject {
 	private float dx = 0, dy = 0;
 	private float speedInCells = 3.0f;
 	private Direction moveDirection = Direction.NONE;
-	private Dye dye;
+	protected Dye dye;
 
 	public Ball(Level level, Dye dye) {
 		super(level);
@@ -64,6 +64,11 @@ public abstract class Ball extends LevelObject {
 				}
 			}
 		}
+
+	}
+
+	protected boolean isInHole() {
+		return dye.equals(getLevel().getDye(getColumn(), getRow()));
 	}
 
 	protected boolean mayMove(Direction direction) {
