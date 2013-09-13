@@ -1,8 +1,18 @@
 package com.github.donttouchit.screen;
 
 import com.badlogic.gdx.Screen;
+import com.github.donttouchit.DontTouchIt;
 
 public abstract class BasicScreen implements Screen {
+	private final DontTouchIt game;
+
+	public BasicScreen(DontTouchIt game) {
+		this.game = game;
+	}
+
+	public DontTouchIt getGame() {
+		return game;
+	}
 
 	protected void draw() {
 	}

@@ -1,5 +1,7 @@
 package com.github.donttouchit.actor;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
@@ -9,6 +11,9 @@ import com.github.donttouchit.geom.Direction;
 import java.awt.*;
 
 public abstract class Ball extends LevelObject {
+	private ShapeRenderer shapeRenderer = new ShapeRenderer();
+	private float R = 30;
+
 	private float dx = 0, dy = 0;
 	private float speedInCells = 3.0f;
 	private Direction moveDirection = Direction.NONE;
@@ -36,6 +41,12 @@ public abstract class Ball extends LevelObject {
 				move(direction);
 			}
 		});
+	}
+
+	public Ball(Level level, Dye dye, int column, int row) {
+		this(level, dye);
+		setColumn(column);
+		setRow(row);
 	}
 
 	@Override
@@ -69,6 +80,38 @@ public abstract class Ball extends LevelObject {
 
 	protected boolean isInHole() {
 		return dye.equals(getLevel().getDye(getColumn(), getRow()));
+	}
+
+	@Override
+	public void draw(SpriteBatch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+		batch.end();
+
+		shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
+		shapeRenderer.translate(getX(), getY(), 0);
+
+		Vector2 center = getCenter();
+
+		// Border
+		float innerR = R;
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		if (isInHole()) {
+			shapeRenderer.setColor(1.0f, 0.84f, 0.0f, 1.0f);
+			innerR = R * 4 / 5;
+		} else {
+			shapeRenderer.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+		}
+		shapeRenderer.circle(center.x, center.y, R);
+		shapeRenderer.end();
+
+		// Inner
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		shapeRenderer.setColor(getDye().getColor());
+		shapeRenderer.circle(center.x, center.y, innerR);
+		shapeRenderer.end();
+
+		batch.begin();
 	}
 
 	protected boolean mayMove(Direction direction) {
@@ -122,5 +165,13 @@ public abstract class Ball extends LevelObject {
 
 	public float getDy() {
 		return dy;
+	}
+
+	public float getR() {
+		return R;
+	}
+
+	public void setR(float r) {
+		R = r;
 	}
 }

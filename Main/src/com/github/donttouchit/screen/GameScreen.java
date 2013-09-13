@@ -2,12 +2,10 @@ package com.github.donttouchit.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.github.donttouchit.DontTouchIt;
 import com.github.donttouchit.actor.*;
 import com.github.donttouchit.actor.properties.Dye;
-import com.github.donttouchit.geom.Direction;
 
 public class GameScreen extends BasicScreen {
 	private Stage stage;
@@ -29,7 +27,8 @@ public class GameScreen extends BasicScreen {
 		Gdx.input.setInputProcessor(stage);
 	}
 
-	public GameScreen() {
+	public GameScreen(DontTouchIt game) {
+		super(game);
 		stage = new Stage();
 		level = new Level(10, 10);
 		Ball redBall = new HeavyBall(level, Dye.RED, 1, 1);
