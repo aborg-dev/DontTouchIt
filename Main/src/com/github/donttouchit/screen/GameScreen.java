@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.github.donttouchit.actor.Ball;
+import com.github.donttouchit.actor.Board;
 import com.github.donttouchit.actor.HeavyBall;
 import com.github.donttouchit.actor.Level;
 import com.github.donttouchit.actor.properties.Dye;
@@ -34,31 +35,33 @@ public class GameScreen extends BasicScreen {
 
 	public GameScreen() {
 		stage = new Stage();
-		level = new Level(5, 5);
+		level = new Level(10, 10);
 		ball = new HeavyBall(level, Dye.RED);
-		stage.addActor(level);
-		level.addActor(ball);
+		Board board = new Board(level);
+		level.addLevelObject(board);
+		level.addLevelObject(ball);
+		stage.addActor(level.getGroup());
 
-		final Ball cBall = ball;
-		System.err.println("Adding input listener!");
-		ball.addListener(new ActorGestureListener() {
-			@Override
-			public void tap(InputEvent event, float x, float y, int count, int button) {
-				System.err.println("Tapped!");
-			}
-
-			@Override
-			public void fling(InputEvent event, float velocityX, float velocityY, int button) {
-				System.err.println("Flinged! " + velocityX + " " + velocityY);
-				Direction direction;
-				if (Math.abs(velocityX) > Math.abs(velocityY)) {
-					direction = velocityX > 0 ? Direction.RIGHT : Direction.LEFT;
-				} else {
-					direction = velocityY > 0 ? Direction.TOP : Direction.BOTTOM;
-				}
-				ball.move(direction);
-			}
-		});
+//		final Ball cBall = ball;
+//		System.err.println("Adding input listener!");
+//		ball.addListener(new ActorGestureListener() {
+//			@Override
+//			public void tap(InputEvent event, float x, float y, int count, int button) {
+//				System.err.println("Tapped!");
+//			}
+//
+//			@Override
+//			public void fling(InputEvent event, float velocityX, float velocityY, int button) {
+//				System.err.println("Flinged! " + velocityX + " " + velocityY);
+//				Direction direction;
+//				if (Math.abs(velocityX) > Math.abs(velocityY)) {
+//					direction = velocityX > 0 ? Direction.RIGHT : Direction.LEFT;
+//				} else {
+//					direction = velocityY > 0 ? Direction.TOP : Direction.BOTTOM;
+//				}
+//				ball.move(direction);
+//			}
+//		});
 	}
 
 	@Override
@@ -73,8 +76,8 @@ public class GameScreen extends BasicScreen {
 		super.update(delta);
 		stage.act(delta);
 
-		float x = (Gdx.graphics.getWidth() - level.getWidth()) / 2;
-		float y = (Gdx.graphics.getHeight() - level.getHeight()) / 2;
-		level.setPosition(x, y);
+		float x = (Gdx.graphics.getWidth() - level.getGroup().getWidth()) / 2;
+		float y = (Gdx.graphics.getHeight() - level.getGroup().getHeight()) / 2;
+		level.getGroup().setPosition(x, y);
 	}
 }

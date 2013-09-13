@@ -1,6 +1,8 @@
 package com.github.donttouchit.actor;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.github.donttouchit.actor.properties.Dye;
 import com.github.donttouchit.geom.Direction;
 
@@ -15,6 +17,25 @@ public abstract class Ball extends LevelObject {
 	public Ball(Level level, Dye dye) {
 		super(level);
 		this.dye = dye;
+
+		addListener(new ActorGestureListener() {
+			@Override
+			public void tap(InputEvent event, float x, float y, int count, int button) {
+				System.err.println("Tapped!");
+			}
+
+			@Override
+			public void fling(InputEvent event, float velocityX, float velocityY, int button) {
+				System.err.println("Flinged! " + velocityX + " " + velocityY);
+				Direction direction;
+				if (Math.abs(velocityX) > Math.abs(velocityY)) {
+					direction = velocityX > 0 ? Direction.RIGHT : Direction.LEFT;
+				} else {
+					direction = velocityY > 0 ? Direction.TOP : Direction.BOTTOM;
+				}
+				move(direction);
+			}
+		});
 	}
 
 	@Override

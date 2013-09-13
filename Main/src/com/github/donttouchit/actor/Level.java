@@ -1,5 +1,6 @@
 package com.github.donttouchit.actor;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,36 +13,38 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public final class Level extends Group {
-	public static final float CELL_SIZE = 64;
-	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-
+public final class Level {
 	private List<LevelObject> levelObjects = new ArrayList<LevelObject>();
+	private Group group = new Group();
 	private boolean[][] passable;
 	private int columns, rows;
-
-	private static final Texture wallTexture = new Texture("wall.png");
+	public static final float CELL_SIZE = 64;
 
 	public Level(int columns, int rows) {
 		this.columns = columns;
 		this.rows = rows;
+		group.setWidth(getColumns() * CELL_SIZE);
+		group.setHeight(getRows() * CELL_SIZE);
+		group.setOrigin(group.getWidth() / 2, group.getHeight() / 2);
+
+		if (Gdx.graphics.getWidth() < group.getWidth() || Gdx.graphics.getHeight() < group.getHeight()) {
+			float aspect = Math.min((Gdx.graphics.getWidth() - CELL_SIZE / 2) / group.getWidth(), (Gdx.graphics.getHeight() - CELL_SIZE / 2) / group.getHeight());
+			System.err.println(aspect);
+			group.setScale(aspect);
+		}
+
 		passable = new boolean[columns][rows];
 		for (int i = 0; i < columns; ++i) {
 			Arrays.fill(passable[i], true);
 		}
-		setWidth(columns * CELL_SIZE);
-		setHeight(rows * CELL_SIZE);
+	}
 
-		addListener(new ActorGestureListener() {
-			@Override
-			public void tap(InputEvent event, float x, float y, int count, int button) {
-				System.err.println("Level listener");
-				int cx = (int)(x / Level.CELL_SIZE);
-				int cy = (int)(y / Level.CELL_SIZE);
-				System.err.println("Previous passable at " + cx + " " + cy + " is " + isPassable(cx, cy));
-				setPassable(cx, cy, !isPassable(cx, cy));
-			}
-		});
+	public void addLevelObject(LevelObject levelObject) {
+		group.addActor(levelObject);
+	}
+
+	public Group getGroup() {
+		return group;
 	}
 
 	public boolean isOnBoard(int column, int row) {
@@ -76,48 +79,6 @@ public final class Level extends Group {
 			}
 		}
 		return true;
-	}
-
-	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
-
-		for (int column = 0; column < getColumns(); ++column) {
-			for (int row = 0; row < getRows(); ++row) {
-				if (!isPassable(column, row)) {
-					batch.draw(wallTexture, getX() + column * CELL_SIZE, getY() + row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-				}
-			}
-		}
-		batch.end();
-
-		shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-		shapeRenderer.translate(getX(), getY(), 0);
-
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-		shapeRenderer.setColor(0.0f, 0.0f, 1.0f, parentAlpha);
-		for (int column = 0; column <= columns; ++column) {
-			shapeRenderer.line(column * CELL_SIZE, 0, column * CELL_SIZE, rows * CELL_SIZE);
-		}
-		for (int row = 0; row <= rows; ++row) {
-			shapeRenderer.line(0, row * CELL_SIZE, columns * CELL_SIZE, row * CELL_SIZE);
-		}
-		shapeRenderer.end();
-
-		batch.begin();
-		super.draw(batch, parentAlpha);
-	}
-	
-
-	@Override
-	protected void childrenChanged() {
-		super.childrenChanged();
-		levelObjects.clear();
-		for (Actor actor : getChildren()) {
-			if (actor instanceof LevelObject) {
-				levelObjects.add((LevelObject)actor);
-			}
-		}
 	}
 
 	public int getColumns() {
