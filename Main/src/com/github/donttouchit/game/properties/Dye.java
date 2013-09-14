@@ -1,4 +1,4 @@
-package com.github.donttouchit.actor.properties;
+package com.github.donttouchit.game.properties;
 
 import com.badlogic.gdx.graphics.Color;
 

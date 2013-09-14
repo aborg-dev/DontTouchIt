@@ -1,4 +1,4 @@
-package com.github.donttouchit.actor;
+package com.github.donttouchit.game;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 

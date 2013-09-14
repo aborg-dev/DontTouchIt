@@ -1,14 +1,8 @@
-package com.github.donttouchit.actor;
+package com.github.donttouchit.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
-import com.github.donttouchit.actor.properties.Dye;
+import com.github.donttouchit.game.properties.Dye;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -61,17 +55,20 @@ public final class Level {
 	}
 
 	public boolean isPassable(int column, int row) {
+		if (!isOnBoard(column, row)) {
+			return false;
+		}
 		return passable[column][row];
 	}
 
 	public void setPassable(int column, int row, boolean passable) {
+		if (!isOnBoard(column, row)) {
+			throw new IllegalArgumentException("This cell is out of board, so it's always impassable");
+		}
 		this.passable[column][row] = passable;
 	}
 
 	public boolean isEmpty(int column, int row) {
-		if (!isOnBoard(column, row)) {
-			return false;
-		}
 		if (!isPassable(column, row)) {
 			return false;
 		}

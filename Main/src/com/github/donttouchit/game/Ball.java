@@ -1,18 +1,19 @@
-package com.github.donttouchit.actor;
+package com.github.donttouchit.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
-import com.github.donttouchit.actor.properties.Dye;
+import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.Direction;
 
 import java.awt.*;
 
 public abstract class Ball extends LevelObject {
-	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private float R = 30;
+	protected ShapeRenderer shapeRenderer = new ShapeRenderer();
+	protected float R = 30;
 
 	private float dx = 0, dy = 0;
 	private float speedInCells = 3.0f;
@@ -71,6 +72,9 @@ public abstract class Ball extends LevelObject {
 				}
 
 				if (!mayMove(getMoveDirection())) {
+					if (isWall(getMoveDirection())) {
+						hitWall();
+					}
 					stop();
 				}
 			}
@@ -114,13 +118,22 @@ public abstract class Ball extends LevelObject {
 		batch.begin();
 	}
 
+	private boolean isWall(Direction direction) {
+		if (direction == Direction.NONE) {
+			return false;
+		}
+		Point p = direction.getPoint();
+		p.translate(getColumn(), getRow());
+		return !getLevel().isPassable(p.x, p.y);
+	}
+
 	protected boolean mayMove(Direction direction) {
 		if (direction == Direction.NONE) {
 			return true;
 		}
 		Point p = direction.getPoint();
 		p.translate(getColumn(), getRow());
-		return level.isEmpty(p.x, p.y);
+		return getLevel().isEmpty(p.x, p.y);
 	}
 
 	public Vector2 getCenter() {
@@ -157,6 +170,10 @@ public abstract class Ball extends LevelObject {
 		if (this.moveDirection == Direction.NONE && mayMove(moveDirection)) {
 			this.moveDirection = moveDirection;
 		}
+	}
+
+	protected void hitWall() {
+		Gdx.app.log("Ball at " + getColumn() + " " + getRow(), " hits the wall");
 	}
 
 	public float getDx() {

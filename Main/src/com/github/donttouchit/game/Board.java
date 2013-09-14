@@ -1,4 +1,4 @@
-package com.github.donttouchit.actor;
+package com.github.donttouchit.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 public class Board extends LevelObject {
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private static final Texture wallTexture = new Texture("wall.png");
+	private static final Texture floorTexture = new Texture("floor.png");
 
 	public Board(Level level) {
 		super(level);
@@ -31,8 +32,12 @@ public class Board extends LevelObject {
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		for (int column = 0; column < getLevel().getColumns(); ++column) {
 			for (int row = 0; row < getLevel().getRows(); ++row) {
-				if (!getLevel().isPassable(column, row)) {
-					batch.draw(wallTexture, getX() + column * Level.CELL_SIZE, getY() + row * Level.CELL_SIZE, Level.CELL_SIZE, Level.CELL_SIZE);
+				float x = getX() + column * Level.CELL_SIZE;
+				float y = getY() + row * Level.CELL_SIZE;
+				if (getLevel().isPassable(column, row)) {
+					batch.draw(floorTexture, x, y, Level.CELL_SIZE, Level.CELL_SIZE);
+				} else {
+					batch.draw(wallTexture, x, y, Level.CELL_SIZE, Level.CELL_SIZE);
 				}
 			}
 		}
@@ -45,10 +50,10 @@ public class Board extends LevelObject {
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 		shapeRenderer.setColor(0.0f, 0.0f, 1.0f, parentAlpha);
 		for (int column = 0; column <= getLevel().getColumns(); ++column) {
-			shapeRenderer.line(column * Level.CELL_SIZE, 0, column * Level.CELL_SIZE, getLevel().getRows() * Level.CELL_SIZE);
+//			shapeRenderer.line(column * Level.CELL_SIZE, 0, column * Level.CELL_SIZE, getLevel().getRows() * Level.CELL_SIZE);
 		}
 		for (int row = 0; row <= getLevel().getRows(); ++row) {
-			shapeRenderer.line(0, row * Level.CELL_SIZE, getLevel().getColumns() * Level.CELL_SIZE, row * Level.CELL_SIZE);
+//			shapeRenderer.line(0, row * Level.CELL_SIZE, getLevel().getColumns() * Level.CELL_SIZE, row * Level.CELL_SIZE);
 		}
 		shapeRenderer.end();
 

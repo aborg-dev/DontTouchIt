@@ -1,4 +1,4 @@
-package com.github.donttouchit.actor;
+package com.github.donttouchit.game;
 
 /**
  * User: iiotep9huy

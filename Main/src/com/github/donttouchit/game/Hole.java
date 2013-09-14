@@ -1,9 +1,8 @@
-package com.github.donttouchit.actor;
+package com.github.donttouchit.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.github.donttouchit.actor.properties.Dye;
+import com.github.donttouchit.game.properties.Dye;
 
 public class Hole extends LevelObject {
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();

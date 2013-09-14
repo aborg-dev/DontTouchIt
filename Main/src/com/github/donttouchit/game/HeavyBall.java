@@ -1,6 +1,6 @@
-package com.github.donttouchit.actor;
+package com.github.donttouchit.game;
 
-import com.github.donttouchit.actor.properties.Dye;
+import com.github.donttouchit.game.properties.Dye;
 
 public class HeavyBall extends Ball {
 	
