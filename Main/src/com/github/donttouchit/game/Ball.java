@@ -3,6 +3,7 @@ package com.github.donttouchit.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
@@ -20,8 +21,8 @@ public abstract class Ball extends LevelObject {
 	private Direction moveDirection = Direction.NONE;
 	protected Dye dye;
 
-	public Ball(Level level, Dye dye) {
-		super(level);
+	public Ball(Level level, Dye dye, int column, int row) {
+		super(level, column, row);
 		this.dye = dye;
 
 		addListener(new ActorGestureListener() {
@@ -42,10 +43,7 @@ public abstract class Ball extends LevelObject {
 				move(direction);
 			}
 		});
-	}
 
-	public Ball(Level level, Dye dye, int column, int row) {
-		this(level, dye);
 		setColumn(column);
 		setRow(row);
 	}
@@ -62,6 +60,8 @@ public abstract class Ball extends LevelObject {
 			dy += dir.y;
 
 			if (Math.abs(dx) >= 1 || Math.abs(dy) >= 1) {
+				getLevel().ballLeaved(this, new GridPoint2(getColumn(), getRow()));
+
 				if (Math.abs(dx) >= 1) {
 					setColumn(getColumn() + (int)Math.signum(dx));
 					dx -= Math.signum(dx);
@@ -70,8 +70,9 @@ public abstract class Ball extends LevelObject {
 					setRow(getRow() + (int)Math.signum(dy));
 					dy -= Math.signum(dy);
 				}
+				getLevel().ballEntered(this, new GridPoint2(getColumn(), getRow()));
 
-				if (!mayMove(getMoveDirection())) {
+				if (!isEmpty(getMoveDirection())) {
 					if (isWall(getMoveDirection())) {
 						hitWall();
 					}
@@ -127,7 +128,7 @@ public abstract class Ball extends LevelObject {
 		return !getLevel().isPassable(p.x, p.y);
 	}
 
-	protected boolean mayMove(Direction direction) {
+	private boolean isEmpty(Direction direction) {
 		if (direction == Direction.NONE) {
 			return true;
 		}
@@ -136,6 +137,7 @@ public abstract class Ball extends LevelObject {
 		return getLevel().isEmpty(p.x, p.y);
 	}
 
+	@Override
 	public Vector2 getCenter() {
 		return new Vector2((dx + 0.5f) * Level.CELL_SIZE, (dy + 0.5f) * Level.CELL_SIZE);
 	}
@@ -164,12 +166,23 @@ public abstract class Ball extends LevelObject {
 		moveDirection = Direction.NONE;
 		dx = 0;
 		dy = 0;
+		getLevel().stopAction(this);
 	}
 
 	public void move(Direction moveDirection) {
-		if (this.moveDirection == Direction.NONE && mayMove(moveDirection)) {
+		if (this.moveDirection == Direction.NONE && isEmpty(moveDirection) && getLevel().startAction(this)) {
 			this.moveDirection = moveDirection;
 		}
+	}
+
+	public void changeDirection(Direction direction) {
+		if (getMoveDirection() == Direction.NONE) {
+			throw new IllegalStateException("Ball is not moving now");
+		}
+		if (direction == Direction.NONE) {
+			throw new IllegalArgumentException("Direction can not be NONE");
+		}
+		moveDirection = direction;
 	}
 
 	protected void hitWall() {

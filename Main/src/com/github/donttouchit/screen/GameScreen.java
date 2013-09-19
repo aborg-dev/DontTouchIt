@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.github.donttouchit.DontTouchIt;
 import com.github.donttouchit.game.*;
 import com.github.donttouchit.game.properties.Dye;
+import com.github.donttouchit.geom.Direction;
 
 public class GameScreen extends BasicScreen {
 	private Stage stage;
@@ -51,17 +52,32 @@ public class GameScreen extends BasicScreen {
 			}
 		});
 
-		Ball redBall = new HeavyBall(level, Dye.RED, 1, 1);
-		Ball blueBall = new LightBall(level, Dye.BLUE, 1, 5);
-		Hole redHole = new Hole(level, Dye.RED, 3, 3);
-		Hole blueHole = new Hole(level, Dye.BLUE, 7, 4);
 		Board board = new Board(level);
 
+		PressurePlate plate = new PressurePlate(level, Dye.GREEN, 3, 0);
+		ImaginaryWall wall = new ImaginaryWall(level, Dye.GREEN, 5, 1, true);
+
+		Arrow arrow = new Arrow(level, 2, 2, Direction.LEFT);
+
+		Hole redHole = new Hole(level, Dye.RED, 3, 3);
+		Hole blueHole = new Hole(level, Dye.BLUE, 7, 4);
+
+		Ball redBall = new HeavyBall(level, Dye.RED, 1, 1);
+		Ball blueBall = new LightBall(level, Dye.BLUE, 1, 5);
+
 		level.addLevelObject(board);
+
+		level.addLevelObject(plate);
+		level.addLevelObject(wall);
+
+		level.addLevelObject(arrow);
+
 		level.addLevelObject(redHole);
 		level.addLevelObject(blueHole);
+
 		level.addLevelObject(redBall);
 		level.addLevelObject(blueBall);
+
 		stage.addActor(level.getGroup());
 		stage.addActor(restart);
 	}

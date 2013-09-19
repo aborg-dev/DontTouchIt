@@ -8,13 +8,9 @@ public class Hole extends LevelObject {
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private Dye dye;
 
-	public Hole(Level level, Dye dye) {
-		super(level);
-		this.dye = dye;
-	}
-
 	public Hole(Level level, Dye dye, int column, int row) {
-		this(level, dye);
+		super(level, column, row);
+		this.dye = dye;
 		setColumn(column);
 		setRow(row);
 	}

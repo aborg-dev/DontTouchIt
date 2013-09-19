@@ -1,6 +1,7 @@
 package com.github.donttouchit.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.github.donttouchit.game.properties.Dye;
 
@@ -9,11 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public final class Level {
+public final class Level implements ActionListener {
 	private List<LevelObject> levelObjects = new ArrayList<LevelObject>();
 	private Group group = new Group();
 	private boolean[][] passable;
 	private int columns, rows;
+	private boolean inAction = false;
 	public static final float CELL_SIZE = 64;
 
 	public Level(int columns, int rows) {
@@ -98,5 +100,56 @@ public final class Level {
 
 	public int getRows() {
 		return rows;
+	}
+
+	public boolean startAction(LevelObject levelObject) {
+		if (inAction) return false;
+		beforeAction(levelObject);
+		inAction = true;
+		return true;
+	}
+
+	public void stopAction(LevelObject levelObject) {
+		if (inAction) {
+			inAction = false;
+			afterAction(levelObject);
+		}
+	}
+
+	public void change(Dye dye, Object object) {
+		for (LevelObject levelObject : levelObjects) {
+			if (levelObject instanceof ChangeListener) {
+				ChangeListener changeListener = (ChangeListener)levelObject;
+				if (changeListener.accept(dye, object)) {
+					changeListener.changed(object);
+				}
+			}
+		}
+	}
+
+	private void beforeAction(LevelObject levelObject) {
+
+	}
+
+	private void afterAction(LevelObject levelObject) {
+
+	}
+
+	@Override
+	public void ballEntered(Ball ball, GridPoint2 cell) {
+		for (LevelObject levelObject : levelObjects) {
+			if (levelObject instanceof ActionListener) {
+				((ActionListener)levelObject).ballEntered(ball, cell);
+			}
+		}
+	}
+
+	@Override
+	public void ballLeaved(Ball ball, GridPoint2 cell) {
+		for (LevelObject levelObject : levelObjects) {
+			if (levelObject instanceof ActionListener) {
+				((ActionListener)levelObject).ballLeaved(ball, cell);
+			}
+		}
 	}
 }

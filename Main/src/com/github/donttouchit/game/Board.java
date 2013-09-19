@@ -12,7 +12,7 @@ public class Board extends LevelObject {
 	private static final Texture floorTexture = new Texture("floor.png");
 
 	public Board(Level level) {
-		super(level);
+		super(level, 0, 0);
 		setWidth(getLevel().getColumns() * Level.CELL_SIZE);
 		setHeight(getLevel().getRows() * Level.CELL_SIZE);
 
@@ -59,5 +59,10 @@ public class Board extends LevelObject {
 
 		batch.begin();
 		super.draw(batch, parentAlpha);
+	}
+
+	@Override
+	public boolean isPassable(int column, int row) {
+		return true;
 	}
 }

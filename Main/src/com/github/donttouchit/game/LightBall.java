@@ -12,10 +12,6 @@ public class LightBall extends Ball {
 	private static final float HEALTH_POINT_PADDING = 4;
 	private int health = 3;
 
-	public LightBall(Level level, Dye dye) {
-		super(level, dye);
-	}
-
 	public LightBall(Level level, Dye dye, int column, int row) {
 		super(level, dye, column, row);
 	}

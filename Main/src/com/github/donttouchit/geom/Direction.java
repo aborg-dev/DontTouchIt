@@ -21,4 +21,25 @@ public enum Direction {
 		return new Point(deltaX[ordinal()], deltaY[ordinal()]);
 	}
 
+	public boolean isHorizontal() {
+		return this == LEFT || this == RIGHT;
+	}
+
+	public boolean isVertical() {
+		return this == TOP || this == BOTTOM;
+	}
+
+	public float angleTo(Direction direction) {
+		if (this == Direction.NONE || direction == Direction.NONE) {
+			throw new IllegalArgumentException("Angle to NONE direction is undefined");
+		}
+		int index1 = ordinal() - 1;
+		int index2 = direction.ordinal() - 1;
+		return ((index1 - index2 + 4) % 4) * 90;
+	}
+
+	public Direction plus(int rotations) {
+		int index = (ordinal() - 1 + rotations) % 4 + 1;
+		return Direction.values()[index];
+	}
 }
