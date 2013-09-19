@@ -19,7 +19,7 @@ public abstract class Ball extends LevelObject {
 	private float dx = 0, dy = 0;
 	private float speedInCells = 3.0f;
 	private Direction moveDirection = Direction.NONE;
-	protected Dye dye;
+	protected final Dye dye;
 
 	public Ball(Level level, Dye dye, int column, int row) {
 		super(level, column, row);
@@ -60,7 +60,7 @@ public abstract class Ball extends LevelObject {
 			dy += dir.y;
 
 			if (Math.abs(dx) >= 1 || Math.abs(dy) >= 1) {
-				getLevel().ballLeaved(this, new GridPoint2(getColumn(), getRow()));
+				GridPoint2 previousCell = new GridPoint2(getColumn(), getRow());
 
 				if (Math.abs(dx) >= 1) {
 					setColumn(getColumn() + (int)Math.signum(dx));
@@ -70,6 +70,8 @@ public abstract class Ball extends LevelObject {
 					setRow(getRow() + (int)Math.signum(dy));
 					dy -= Math.signum(dy);
 				}
+
+				getLevel().ballLeft(this, new GridPoint2(previousCell));
 				getLevel().ballEntered(this, new GridPoint2(getColumn(), getRow()));
 
 				if (!isEmpty(getMoveDirection())) {
@@ -152,10 +154,6 @@ public abstract class Ball extends LevelObject {
 
 	public Dye getDye() {
 		return dye;
-	}
-
-	public void setDye(Dye dye) {
-		this.dye = dye;
 	}
 
 	public Direction getMoveDirection() {

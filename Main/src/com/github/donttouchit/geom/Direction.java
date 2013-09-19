@@ -39,6 +39,7 @@ public enum Direction {
 	}
 
 	public Direction plus(int rotations) {
+		rotations = ((rotations % 4) + 4) % 4;
 		int index = (ordinal() - 1 + rotations) % 4 + 1;
 		return Direction.values()[index];
 	}

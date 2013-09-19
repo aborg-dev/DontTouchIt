@@ -12,6 +12,7 @@ public class ImaginaryWall extends LevelObject implements ChangeListener {
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private final Dye dye;
 	private boolean opened = false;
+	private boolean goingToClose = false;
 	private final boolean horizontal;
 
 	public ImaginaryWall(Level level, Dye dye, int column, int row, boolean horizontal) {
@@ -21,14 +22,27 @@ public class ImaginaryWall extends LevelObject implements ChangeListener {
 	}
 
 	@Override
+	public void act(float delta) {
+		super.act(delta);
+		if (goingToClose && getLevel().isEmpty(getColumn(), getRow())) {
+			goingToClose = false;
+			opened = false;
+		}
+	}
+
+	@Override
 	public boolean accept(Dye dye, Object object) {
-		return this.dye == dye;
+		return this.dye == dye && object instanceof String;
 	}
 
 	@Override
 	public void changed(Object object) {
-		if (object instanceof Boolean) {
-			opened = (Boolean)object;
+		String message = (String)object;
+		if (message.equals("open wall")) {
+			opened = true;
+			goingToClose = false;
+		} else if (message.equals("close wall")) {
+			goingToClose = true;
 		}
 	}
 

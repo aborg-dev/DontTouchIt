@@ -15,6 +15,10 @@ public class LevelObject extends Actor {
 		setHeight(Level.CELL_SIZE);
 		setColumn(column);
 		setRow(row);
+
+		if (level != null) {
+			level.addLevelObject(this);
+		}
 	}
 
 	public void setBoardPosition(int column, int row) {

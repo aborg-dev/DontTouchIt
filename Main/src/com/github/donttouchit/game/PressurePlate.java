@@ -9,11 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.github.donttouchit.game.properties.Dye;
 
 public class PressurePlate extends LevelObject implements ActionListener {
-	private Dye dye;
+	private final Dye dye;
 	private static final float PLATE_WIDTH = 20;
 	private static final float PLATE_HEIGHT = 20;
 
-	private ShapeRenderer shapeRenderer = new ShapeRenderer();
+	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private boolean pressed = false;
 
 	public PressurePlate(Level level, Dye dye, int column, int row) {
@@ -56,15 +56,15 @@ public class PressurePlate extends LevelObject implements ActionListener {
 	public void ballEntered(Ball ball, GridPoint2 cell) {
 		if (getColumn() == cell.x && getRow() == cell.y) {
 			pressed = true;
-			getLevel().change(dye, true);
+			getLevel().change(dye, "open wall");
 		}
 	}
 
 	@Override
-	public void ballLeaved(Ball ball, GridPoint2 cell) {
+	public void ballLeft(Ball ball, GridPoint2 cell) {
 		if (getColumn() == cell.x && getRow() == cell.y) {
 			pressed = false;
-			getLevel().change(dye, false);
+			getLevel().change(dye, "close wall");
 		}
 	}
 

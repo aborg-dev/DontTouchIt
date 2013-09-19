@@ -1,6 +1,5 @@
 package com.github.donttouchit.game;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.GridPoint2;
@@ -9,10 +8,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.Direction;
 
 
-public class Arrow extends LevelObject implements ActionListener {
+public class Arrow extends LevelObject implements ActionListener, ChangeListener {
 	private static final float ARROW_LENGTH = 20;
 	private static final float ARROW_HEIGHT = 10;
 	private static final float[] defaultAngles = {
@@ -23,24 +23,31 @@ public class Arrow extends LevelObject implements ActionListener {
 			ARROW_LENGTH + ARROW_HEIGHT,
 			0
 	};
+
 	private final float[] angles = new float[6];
 	private Direction direction;
+	private final int rotationSpeed;
+	private final Dye dye;
 
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
-	public Arrow(Level level, int column, int row, Direction direction) {
+	public Arrow(Level level, Dye dye, int column, int row, Direction direction, int rotationSpeed) {
 		super(level, column, row);
 		if (direction == Direction.NONE) {
 			throw new IllegalArgumentException("Direction can not be NONE");
 		}
+
 		this.direction = direction;
+		this.rotationSpeed = rotationSpeed;
+		this.dye = dye;
 
 		final Arrow thisArrow = this;
 		addListener(new ActorGestureListener() {
 			@Override
 			public void tap(InputEvent event, float x, float y, int count, int button) {
 				super.tap(event, x, y, count, button);
-				thisArrow.direction = thisArrow.direction.plus(1);
+				getLevel().change(thisArrow.dye, "turn");
+//				thisArrow.direction = thisArrow.direction.plus(1);
 			}
 		});
 	}
@@ -75,7 +82,7 @@ public class Arrow extends LevelObject implements ActionListener {
 		buildAngles();
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.setColor(Color.GREEN);
+		shapeRenderer.setColor(dye.getColor());
 		shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 
 		shapeRenderer.triangle(angles[0], angles[1], angles[2], angles[3], angles[4], angles[5]);
@@ -92,7 +99,7 @@ public class Arrow extends LevelObject implements ActionListener {
 	}
 
 	@Override
-	public void ballLeaved(Ball ball, GridPoint2 cell) {
+	public void ballLeft(Ball ball, GridPoint2 cell) {
 		if (getColumn() == cell.x && getRow() == cell.y) {
 		}
 	}
@@ -100,6 +107,18 @@ public class Arrow extends LevelObject implements ActionListener {
 	@Override
 	public boolean isPassable(int column, int row) {
 		return true;
+	}
+
+	@Override
+	public boolean accept(Dye dye, Object object) {
+		return this.dye == dye && object instanceof String;
+	}
+
+	@Override
+	public void changed(Object object) {
+		if (((String)object).equals("turn")) {
+			direction = direction.plus(rotationSpeed);
+		}
 	}
 }
 

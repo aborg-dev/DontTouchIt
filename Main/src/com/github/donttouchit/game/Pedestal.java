@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.donttouchit.game.properties.Dye;
 
-public class Hole extends LevelObject {
-	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private Dye dye;
+public class Pedestal extends LevelObject {
+	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+	private final Dye dye;
 
-	public Hole(Level level, Dye dye, int column, int row) {
+	public Pedestal(Level level, Dye dye, int column, int row) {
 		super(level, column, row);
 		this.dye = dye;
 		setColumn(column);

@@ -55,28 +55,29 @@ public class GameScreen extends BasicScreen {
 		Board board = new Board(level);
 
 		PressurePlate plate = new PressurePlate(level, Dye.GREEN, 3, 0);
-		ImaginaryWall wall = new ImaginaryWall(level, Dye.GREEN, 5, 1, true);
+		ImaginaryWall wall = new ImaginaryWall(level, Dye.GREEN, 4, 0, true);
 
-		Arrow arrow = new Arrow(level, 2, 2, Direction.LEFT);
+		Arrow greenArrowOne = new Arrow(level, Dye.GREEN, 2, 2, Direction.LEFT, 1);
+		Arrow greenArrowTwo = new Arrow(level, Dye.GREEN, 4, 2, Direction.BOTTOM, 2);
 
-		Hole redHole = new Hole(level, Dye.RED, 3, 3);
-		Hole blueHole = new Hole(level, Dye.BLUE, 7, 4);
+		Pedestal redPedestal = new Pedestal(level, Dye.RED, 3, 3);
+		Pedestal bluePedestal = new Pedestal(level, Dye.BLUE, 7, 4);
 
 		Ball redBall = new HeavyBall(level, Dye.RED, 1, 1);
 		Ball blueBall = new LightBall(level, Dye.BLUE, 1, 5);
 
-		level.addLevelObject(board);
-
-		level.addLevelObject(plate);
-		level.addLevelObject(wall);
-
-		level.addLevelObject(arrow);
-
-		level.addLevelObject(redHole);
-		level.addLevelObject(blueHole);
-
-		level.addLevelObject(redBall);
-		level.addLevelObject(blueBall);
+//		level.addLevelObject(board);
+//
+//		level.addLevelObject(plate);
+//		level.addLevelObject(wall);
+//
+//		level.addLevelObject(arrow);
+//
+//		level.addLevelObject(redPedestal);
+//		level.addLevelObject(bluePedestal);
+//
+//		level.addLevelObject(redBall);
+//		level.addLevelObject(blueBall);
 
 		stage.addActor(level.getGroup());
 		stage.addActor(restart);

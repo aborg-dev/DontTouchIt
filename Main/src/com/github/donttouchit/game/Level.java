@@ -16,17 +16,23 @@ public final class Level implements ActionListener {
 	private boolean[][] passable;
 	private int columns, rows;
 	private boolean inAction = false;
+	private int enterPosition;
+	private int exitPosition;
 	public static final float CELL_SIZE = 64;
 
-	public Level(int columns, int rows) {
+	public Level(int columns, int rows, int enterPosition, int exitPosition) {
 		this.columns = columns;
 		this.rows = rows;
+		this.enterPosition = enterPosition;
+		this.exitPosition = exitPosition;
 		group.setWidth(getColumns() * CELL_SIZE);
 		group.setHeight(getRows() * CELL_SIZE);
 		group.setOrigin(group.getWidth() / 2, group.getHeight() / 2);
 
 		if (Gdx.graphics.getWidth() < group.getWidth() || Gdx.graphics.getHeight() < group.getHeight()) {
-			float aspect = Math.min((Gdx.graphics.getWidth() - CELL_SIZE / 2) / group.getWidth(), (Gdx.graphics.getHeight() - CELL_SIZE / 2) / group.getHeight());
+			float xAspect = (Gdx.graphics.getWidth() - CELL_SIZE / 2) / group.getWidth();
+			float yAspect = (Gdx.graphics.getHeight() - CELL_SIZE / 2) / group.getHeight();
+			float aspect = Math.min(xAspect, yAspect);
 			System.err.println(aspect);
 			group.setScale(aspect);
 		}
@@ -86,8 +92,8 @@ public final class Level implements ActionListener {
 	public Dye getDye(int column, int row) {
 		for (LevelObject levelObject : levelObjects) {
 			if (levelObject.getBoardPosition().equals(new Point(column, row))) {
-				if (levelObject instanceof Hole) {
-					return ((Hole) levelObject).getDye();
+				if (levelObject instanceof Pedestal) {
+					return ((Pedestal) levelObject).getDye();
 				}
 			}
 		}
@@ -145,10 +151,10 @@ public final class Level implements ActionListener {
 	}
 
 	@Override
-	public void ballLeaved(Ball ball, GridPoint2 cell) {
+	public void ballLeft(Ball ball, GridPoint2 cell) {
 		for (LevelObject levelObject : levelObjects) {
 			if (levelObject instanceof ActionListener) {
-				((ActionListener)levelObject).ballLeaved(ball, cell);
+				((ActionListener)levelObject).ballLeft(ball, cell);
 			}
 		}
 	}
