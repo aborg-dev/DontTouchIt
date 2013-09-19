@@ -1,9 +1,9 @@
 package com.github.donttouchit.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.github.donttouchit.game.properties.Dye;
+import com.github.donttouchit.geom.GridPoint;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,18 +16,22 @@ public final class Level implements ActionListener {
 	private boolean[][] passable;
 	private int columns, rows;
 	private boolean inAction = false;
-	private int enterPosition;
-	private int exitPosition;
+	private GridPoint enterPoint;
+	private GridPoint exitPoint;
 	public static final float CELL_SIZE = 64;
 
-	public Level(int columns, int rows, int enterPosition, int exitPosition) {
+	public Level(int columns, int rows, GridPoint enterPoint, GridPoint exitPoint) {
 		this.columns = columns;
 		this.rows = rows;
-		this.enterPosition = enterPosition;
-		this.exitPosition = exitPosition;
+		this.enterPoint = enterPoint;
+		this.exitPoint = exitPoint;
 		group.setWidth(getColumns() * CELL_SIZE);
 		group.setHeight(getRows() * CELL_SIZE);
 		group.setOrigin(group.getWidth() / 2, group.getHeight() / 2);
+
+		if (enterPoint.equals(exitPoint)) {
+			throw new IllegalArgumentException("The enter point can not be equal to the exit one");
+		}
 
 		if (Gdx.graphics.getWidth() < group.getWidth() || Gdx.graphics.getHeight() < group.getHeight()) {
 			float xAspect = (Gdx.graphics.getWidth() - CELL_SIZE / 2) / group.getWidth();
@@ -38,9 +42,12 @@ public final class Level implements ActionListener {
 		}
 
 		passable = new boolean[columns][rows];
-		for (int i = 0; i < columns; ++i) {
-			Arrays.fill(passable[i], true);
+		for (boolean[] array : passable) {
+			Arrays.fill(array, true);
 		}
+
+		setPassable(enterPoint.x, enterPoint.y, false);
+		setPassable(exitPoint.x, exitPoint.y, false);
 	}
 
 	public void addLevelObject(LevelObject levelObject) {
@@ -48,8 +55,53 @@ public final class Level implements ActionListener {
 		levelObjects.add(levelObject);
 	}
 
-	public Group getGroup() {
-		return group;
+	@Override
+	public void ballEntered(Ball ball, GridPoint cell) {
+		for (LevelObject levelObject : levelObjects) {
+			if (levelObject instanceof ActionListener) {
+				((ActionListener)levelObject).ballEntered(ball, cell);
+			}
+		}
+	}
+
+	@Override
+	public void ballLeft(Ball ball, GridPoint cell) {
+		for (LevelObject levelObject : levelObjects) {
+			if (levelObject instanceof ActionListener) {
+				((ActionListener)levelObject).ballLeft(ball, cell);
+			}
+		}
+	}
+
+	public boolean startAction(LevelObject levelObject) {
+		if (inAction) return false;
+		beforeAction(levelObject);
+		inAction = true;
+		return true;
+	}
+
+	public void stopAction(LevelObject levelObject) {
+		if (inAction) {
+			inAction = false;
+			afterAction(levelObject);
+		}
+	}
+
+	public void change(Dye dye, Object object) {
+		for (LevelObject levelObject : levelObjects) {
+			if (levelObject instanceof ChangeListener) {
+				ChangeListener changeListener = (ChangeListener)levelObject;
+				if (changeListener.accept(dye, object)) {
+					changeListener.changed(object);
+				}
+			}
+		}
+	}
+
+	private void beforeAction(LevelObject levelObject) {
+	}
+
+	private void afterAction(LevelObject levelObject) {
 	}
 
 	public boolean isOnBoard(int column, int row) {
@@ -108,54 +160,15 @@ public final class Level implements ActionListener {
 		return rows;
 	}
 
-	public boolean startAction(LevelObject levelObject) {
-		if (inAction) return false;
-		beforeAction(levelObject);
-		inAction = true;
-		return true;
+	public Group getGroup() {
+		return group;
 	}
 
-	public void stopAction(LevelObject levelObject) {
-		if (inAction) {
-			inAction = false;
-			afterAction(levelObject);
-		}
+	public GridPoint getEnterPoint() {
+		return enterPoint;
 	}
 
-	public void change(Dye dye, Object object) {
-		for (LevelObject levelObject : levelObjects) {
-			if (levelObject instanceof ChangeListener) {
-				ChangeListener changeListener = (ChangeListener)levelObject;
-				if (changeListener.accept(dye, object)) {
-					changeListener.changed(object);
-				}
-			}
-		}
-	}
-
-	private void beforeAction(LevelObject levelObject) {
-
-	}
-
-	private void afterAction(LevelObject levelObject) {
-
-	}
-
-	@Override
-	public void ballEntered(Ball ball, GridPoint2 cell) {
-		for (LevelObject levelObject : levelObjects) {
-			if (levelObject instanceof ActionListener) {
-				((ActionListener)levelObject).ballEntered(ball, cell);
-			}
-		}
-	}
-
-	@Override
-	public void ballLeft(Ball ball, GridPoint2 cell) {
-		for (LevelObject levelObject : levelObjects) {
-			if (levelObject instanceof ActionListener) {
-				((ActionListener)levelObject).ballLeft(ball, cell);
-			}
-		}
+	public GridPoint getExitPoint() {
+		return exitPoint;
 	}
 }

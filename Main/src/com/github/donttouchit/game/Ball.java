@@ -3,14 +3,12 @@ package com.github.donttouchit.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.Direction;
-
-import java.awt.*;
+import com.github.donttouchit.geom.GridPoint;
 
 public abstract class Ball extends LevelObject {
 	protected ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -60,7 +58,7 @@ public abstract class Ball extends LevelObject {
 			dy += dir.y;
 
 			if (Math.abs(dx) >= 1 || Math.abs(dy) >= 1) {
-				GridPoint2 previousCell = new GridPoint2(getColumn(), getRow());
+				GridPoint previousCell = new GridPoint(getColumn(), getRow());
 
 				if (Math.abs(dx) >= 1) {
 					setColumn(getColumn() + (int)Math.signum(dx));
@@ -71,8 +69,8 @@ public abstract class Ball extends LevelObject {
 					dy -= Math.signum(dy);
 				}
 
-				getLevel().ballLeft(this, new GridPoint2(previousCell));
-				getLevel().ballEntered(this, new GridPoint2(getColumn(), getRow()));
+				getLevel().ballLeft(this, new GridPoint(previousCell));
+				getLevel().ballEntered(this, new GridPoint(getColumn(), getRow()));
 
 				if (!isEmpty(getMoveDirection())) {
 					if (isWall(getMoveDirection())) {
@@ -125,8 +123,9 @@ public abstract class Ball extends LevelObject {
 		if (direction == Direction.NONE) {
 			return false;
 		}
-		Point p = direction.getPoint();
-		p.translate(getColumn(), getRow());
+		GridPoint p = direction.getPoint();
+		p.x += getColumn();
+		p.y += getRow();
 		return !getLevel().isPassable(p.x, p.y);
 	}
 
@@ -134,8 +133,9 @@ public abstract class Ball extends LevelObject {
 		if (direction == Direction.NONE) {
 			return true;
 		}
-		Point p = direction.getPoint();
-		p.translate(getColumn(), getRow());
+		GridPoint p = direction.getPoint();
+		p.x += getColumn();
+		p.y += getRow();
 		return getLevel().isEmpty(p.x, p.y);
 	}
 

@@ -1,7 +1,7 @@
 package com.github.donttouchit.geom;
 
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
-import java.awt.Point;
 
 public enum Direction {
 	NONE,
@@ -17,8 +17,8 @@ public enum Direction {
 		return new Vector2(deltaX[ordinal()], deltaY[ordinal()]);
 	}
 
-	public Point getPoint() {
-		return new Point(deltaX[ordinal()], deltaY[ordinal()]);
+	public GridPoint getPoint() {
+		return new GridPoint(deltaX[ordinal()], deltaY[ordinal()]);
 	}
 
 	public boolean isHorizontal() {

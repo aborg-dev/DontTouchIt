@@ -13,6 +13,7 @@ import com.github.donttouchit.DontTouchIt;
 import com.github.donttouchit.game.*;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.Direction;
+import com.github.donttouchit.geom.GridPoint;
 
 public class GameScreen extends BasicScreen {
 	private Stage stage;
@@ -39,7 +40,7 @@ public class GameScreen extends BasicScreen {
 	public GameScreen(DontTouchIt game) {
 		super(game);
 		stage = new Stage();
-		level = new Level(10, 10);
+		level = new Level(10, 10, new GridPoint(0, 6), new GridPoint(6, 6));
 
 		SpriteDrawable sprite = new SpriteDrawable(new Sprite(new Texture("restart.png")));
 		restart = new ImageButton(sprite);

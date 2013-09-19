@@ -3,10 +3,10 @@ package com.github.donttouchit.game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.github.donttouchit.game.properties.Dye;
+import com.github.donttouchit.geom.GridPoint;
 
 public class PressurePlate extends LevelObject implements ActionListener {
 	private final Dye dye;
@@ -53,7 +53,7 @@ public class PressurePlate extends LevelObject implements ActionListener {
 	}
 
 	@Override
-	public void ballEntered(Ball ball, GridPoint2 cell) {
+	public void ballEntered(Ball ball, GridPoint cell) {
 		if (getColumn() == cell.x && getRow() == cell.y) {
 			pressed = true;
 			getLevel().change(dye, "open wall");
@@ -61,7 +61,7 @@ public class PressurePlate extends LevelObject implements ActionListener {
 	}
 
 	@Override
-	public void ballLeft(Ball ball, GridPoint2 cell) {
+	public void ballLeft(Ball ball, GridPoint cell) {
 		if (getColumn() == cell.x && getRow() == cell.y) {
 			pressed = false;
 			getLevel().change(dye, "close wall");

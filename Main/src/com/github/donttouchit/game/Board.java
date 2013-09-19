@@ -1,10 +1,14 @@
 package com.github.donttouchit.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.github.donttouchit.geom.GridPoint;
+import com.github.donttouchit.geom.LevelChecker;
 
 public class Board extends LevelObject {
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -56,6 +60,26 @@ public class Board extends LevelObject {
 //			shapeRenderer.line(0, row * Level.CELL_SIZE, getLevel().getColumns() * Level.CELL_SIZE, row * Level.CELL_SIZE);
 		}
 		shapeRenderer.end();
+
+		GridPoint enter = getLevel().getEnterPoint(), exit = getLevel().getExitPoint();
+
+		Gdx.gl.glLineWidth(3.0f);
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+
+		shapeRenderer.setColor(Color.MAGENTA);
+		shapeRenderer.rect(enter.x * Level.CELL_SIZE, enter.y * Level.CELL_SIZE, Level.CELL_SIZE, Level.CELL_SIZE);
+
+		shapeRenderer.setColor(Color.PINK);
+		shapeRenderer.rect(exit.x * Level.CELL_SIZE, exit.y * Level.CELL_SIZE, Level.CELL_SIZE, Level.CELL_SIZE);
+
+		LevelChecker levelChecker = new LevelChecker();
+		if (levelChecker.checkExitWay(getLevel())) {
+			shapeRenderer.setColor(Color.RED);
+			shapeRenderer.rect(0, 0, getWidth(), getHeight());
+		}
+
+		shapeRenderer.end();
+		Gdx.gl.glLineWidth(1.0f);
 
 		batch.begin();
 		super.draw(batch, parentAlpha);
