@@ -8,11 +8,17 @@ public class Pedestal extends LevelObject {
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private final Dye dye;
 
-	public Pedestal(Level level, Dye dye, int column, int row) {
-		super(level, column, row);
+	public static class Specification extends LevelObject.Specification {
+		protected Dye dye;
+	}
+
+	public Pedestal(Dye dye, int column, int row) {
+		super(column, row);
 		this.dye = dye;
-		setColumn(column);
-		setRow(row);
+	}
+
+	public Pedestal(Specification specification) {
+		this(specification.dye, specification.column, specification.row);
 	}
 
 	@Override

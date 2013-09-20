@@ -19,8 +19,12 @@ public abstract class Ball extends LevelObject {
 	private Direction moveDirection = Direction.NONE;
 	protected final Dye dye;
 
-	public Ball(Level level, Dye dye, int column, int row) {
-		super(level, column, row);
+	public static class Specification extends LevelObject.Specification {
+		protected Dye dye;
+	}
+
+	public Ball(Dye dye, int column, int row) {
+		super(column, row);
 		this.dye = dye;
 
 		addListener(new ActorGestureListener() {
@@ -41,9 +45,10 @@ public abstract class Ball extends LevelObject {
 				move(direction);
 			}
 		});
+	}
 
-		setColumn(column);
-		setRow(row);
+	public Ball(Specification specification) {
+		this(specification.dye, specification.column, specification.row);
 	}
 
 	@Override

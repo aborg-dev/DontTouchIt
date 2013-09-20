@@ -31,8 +31,14 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
-	public Arrow(Level level, Dye dye, int column, int row, Direction direction, int rotationSpeed) {
-		super(level, column, row);
+	public static class Specification extends LevelObject.Specification {
+		protected Direction direction;
+		protected int rotationSpeed;
+		protected Dye dye;
+	}
+
+	public Arrow(Dye dye, int column, int row, Direction direction, int rotationSpeed) {
+		super(column, row);
 		if (direction == Direction.NONE) {
 			throw new IllegalArgumentException("Direction can not be NONE");
 		}
@@ -50,6 +56,10 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 //				thisArrow.direction = thisArrow.direction.plus(1);
 			}
 		});
+	}
+
+	public Arrow(Specification specification) {
+		this(specification.dye, specification.column, specification.row, specification.direction, specification.rotationSpeed);
 	}
 
 	private void buildAngles() {

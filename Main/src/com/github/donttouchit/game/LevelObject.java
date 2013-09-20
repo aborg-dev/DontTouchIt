@@ -2,6 +2,7 @@ package com.github.donttouchit.game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.github.donttouchit.geom.GridPoint;
 
 import java.awt.*;
 
@@ -9,16 +10,20 @@ public class LevelObject extends Actor {
 	private Level level;
 	private int column = 0, row = 0;
 
-	public LevelObject(Level level, int column, int row) {
-		this.level = level;
+	public LevelObject(int column, int row) {
 		setWidth(Level.CELL_SIZE);
 		setHeight(Level.CELL_SIZE);
 		setColumn(column);
 		setRow(row);
+	}
 
-		if (level != null) {
-			level.addLevelObject(this);
-		}
+	public static class Specification {
+		protected int column;
+		protected int row;
+	}
+
+	public LevelObject(Specification specification) {
+		this(specification.column, specification.row);
 	}
 
 	public void setBoardPosition(int column, int row) {
@@ -26,8 +31,8 @@ public class LevelObject extends Actor {
 		setRow(row);
 	}
 
-	public Point getBoardPosition() {
-		return new Point(column, row);
+	public GridPoint getBoardPosition() {
+		return new GridPoint(column, row);
 	}
 
 	public boolean isPassable(int column, int row) {

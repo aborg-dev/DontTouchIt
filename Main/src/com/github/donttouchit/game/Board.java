@@ -5,18 +5,29 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.github.donttouchit.geom.GridPoint;
 import com.github.donttouchit.geom.LevelChecker;
 
-public class Board extends LevelObject {
+public class Board extends Actor {
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private static final Texture wallTexture = new Texture("wall.png");
 	private static final Texture floorTexture = new Texture("floor.png");
 
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
+	private Level level;
+
 	public Board(Level level) {
-		super(level, 0, 0);
+		setLevel(level);
 		setWidth(getLevel().getColumns() * Level.CELL_SIZE);
 		setHeight(getLevel().getRows() * Level.CELL_SIZE);
 
@@ -26,7 +37,6 @@ public class Board extends LevelObject {
 				System.err.println("Level listener");
 				int cx = (int) (x / Level.CELL_SIZE);
 				int cy = (int) (y / Level.CELL_SIZE);
-				System.err.println("Previous passable at " + cx + " " + cy + " is " + isPassable(cx, cy));
 				getLevel().setPassable(cx, cy, !getLevel().isPassable(cx, cy));
 			}
 		});
@@ -83,10 +93,5 @@ public class Board extends LevelObject {
 
 		batch.begin();
 		super.draw(batch, parentAlpha);
-	}
-
-	@Override
-	public boolean isPassable(int column, int row) {
-		return true;
 	}
 }

@@ -13,12 +13,18 @@ public class ImaginaryWall extends LevelObject implements ChangeListener {
 	private final Dye dye;
 	private boolean opened = false;
 	private boolean goingToClose = false;
-	private final boolean horizontal;
 
-	public ImaginaryWall(Level level, Dye dye, int column, int row, boolean horizontal) {
-		super(level, column, row);
+	public static class Specification extends LevelObject.Specification {
+		protected Dye dye;
+	}
+
+	public ImaginaryWall(Dye dye, int column, int row) {
+		super(column, row);
 		this.dye = dye;
-		this.horizontal = horizontal;
+	}
+
+	public ImaginaryWall(Specification specification) {
+		this(specification.dye, specification.column, specification.row);
 	}
 
 	@Override

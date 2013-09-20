@@ -16,9 +16,17 @@ public class PressurePlate extends LevelObject implements ActionListener {
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private boolean pressed = false;
 
-	public PressurePlate(Level level, Dye dye, int column, int row) {
-		super(level, column, row);
+	public static class Specification extends LevelObject.Specification {
+		protected Dye dye;
+	}
+
+	public PressurePlate(Dye dye, int column, int row) {
+		super(column, row);
 		this.dye = dye;
+	}
+
+	public PressurePlate(Specification specification) {
+		this(specification.dye, specification.column, specification.row);
 	}
 
 	@Override

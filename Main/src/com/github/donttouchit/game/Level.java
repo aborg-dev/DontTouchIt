@@ -6,6 +6,7 @@ import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.GridPoint;
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,9 +49,21 @@ public final class Level implements ActionListener {
 
 		setPassable(enterPoint.x, enterPoint.y, false);
 		setPassable(exitPoint.x, exitPoint.y, false);
+		Board board = new Board(this);
+		group.addActor(board);
+	}
+
+	public Level(Specification specification) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		columns = specification.columns;
+		rows = specification.rows;
+		passable = specification.passable;
+		for (LevelObject.Specification objectSpecification : specification.levelObjectsSpecifications) {
+			addLevelObject((LevelObject) objectSpecification.getClass().getEnclosingClass().getConstructor(LevelObject.Specification.class).newInstance(this, objectSpecification));
+		}
 	}
 
 	public void addLevelObject(LevelObject levelObject) {
+		levelObject.setLevel(this);
 		group.addActor(levelObject);
 		levelObjects.add(levelObject);
 	}
@@ -143,7 +156,7 @@ public final class Level implements ActionListener {
 
 	public Dye getDye(int column, int row) {
 		for (LevelObject levelObject : levelObjects) {
-			if (levelObject.getBoardPosition().equals(new Point(column, row))) {
+			if (levelObject.getBoardPosition().equals(new GridPoint(column, row))) {
 				if (levelObject instanceof Pedestal) {
 					return ((Pedestal) levelObject).getDye();
 				}
@@ -170,5 +183,13 @@ public final class Level implements ActionListener {
 
 	public GridPoint getExitPoint() {
 		return exitPoint;
+	}
+
+	public static class Specification {
+		private List<LevelObject.Specification> levelObjectsSpecifications = new ArrayList<LevelObject.Specification>();
+		private boolean[][] passable;
+		private int columns, rows;
+		private GridPoint enterPoint;
+		private GridPoint exitPoint;
 	}
 }

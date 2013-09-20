@@ -7,9 +7,7 @@ package com.github.donttouchit.game;
  * Project: Don'tTouchIt
  */
 public class Wall extends LevelObject {
-	public Wall(Level level, int column, int row) {
-		super(level, column, row);
-		setHeight(Level.CELL_SIZE);
-		setWidth(Level.CELL_SIZE);
+	public Wall(int column, int row) {
+		super(column, row);
 	}
 }

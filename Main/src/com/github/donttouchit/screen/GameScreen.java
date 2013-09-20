@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Json;
 import com.github.donttouchit.DontTouchIt;
 import com.github.donttouchit.game.*;
 import com.github.donttouchit.game.properties.Dye;
@@ -40,7 +41,7 @@ public class GameScreen extends BasicScreen {
 	public GameScreen(DontTouchIt game) {
 		super(game);
 		stage = new Stage();
-		level = new Level(10, 10, new GridPoint(0, 6), new GridPoint(6, 6));
+		level = new Level(12, 8, new GridPoint(0, 6), new GridPoint(6, 6));
 
 		SpriteDrawable sprite = new SpriteDrawable(new Sprite(new Texture("restart.png")));
 		restart = new ImageButton(sprite);
@@ -53,32 +54,17 @@ public class GameScreen extends BasicScreen {
 			}
 		});
 
-		Board board = new Board(level);
+		level.addLevelObject(new PressurePlate(Dye.GREEN, 3, 0));
+		level.addLevelObject(new ImaginaryWall(Dye.GREEN, 4, 0));
 
-		PressurePlate plate = new PressurePlate(level, Dye.GREEN, 3, 0);
-		ImaginaryWall wall = new ImaginaryWall(level, Dye.GREEN, 4, 0, true);
+		level.addLevelObject(new Arrow(Dye.GREEN, 2, 2, Direction.LEFT, 1));
+		level.addLevelObject(new Arrow(Dye.GREEN, 4, 2, Direction.BOTTOM, 2));
 
-		Arrow greenArrowOne = new Arrow(level, Dye.GREEN, 2, 2, Direction.LEFT, 1);
-		Arrow greenArrowTwo = new Arrow(level, Dye.GREEN, 4, 2, Direction.BOTTOM, 2);
+		level.addLevelObject(new Pedestal(Dye.RED, 3, 3));
+		level.addLevelObject(new Pedestal(Dye.BLUE, 7, 4));
 
-		Pedestal redPedestal = new Pedestal(level, Dye.RED, 3, 3);
-		Pedestal bluePedestal = new Pedestal(level, Dye.BLUE, 7, 4);
-
-		Ball redBall = new HeavyBall(level, Dye.RED, 1, 1);
-		Ball blueBall = new LightBall(level, Dye.BLUE, 1, 5);
-
-//		level.addLevelObject(board);
-//
-//		level.addLevelObject(plate);
-//		level.addLevelObject(wall);
-//
-//		level.addLevelObject(arrow);
-//
-//		level.addLevelObject(redPedestal);
-//		level.addLevelObject(bluePedestal);
-//
-//		level.addLevelObject(redBall);
-//		level.addLevelObject(blueBall);
+		level.addLevelObject(new HeavyBall(Dye.RED, 1, 1));
+		level.addLevelObject(new LightBall(Dye.BLUE, 1, 5));
 
 		stage.addActor(level.getGroup());
 		stage.addActor(restart);
