@@ -29,6 +29,31 @@ public class GridPoint implements Comparable<GridPoint> {
 		return this;
 	}
 
+	public void add(int x, int y) {
+		this.x += x;
+		this.y += y;
+	}
+
+	public void add(GridPoint p) {
+		this.x += p.x;
+		this.y += p.y;
+	}
+
+	public void subtract(int x, int y) {
+		this.x -= x;
+		this.y -= y;
+	}
+
+	public void subtract(GridPoint p) {
+		this.x -= p.x;
+		this.y -= p.y;
+	}
+
+	public void scale(int factor) {
+		x *= factor;
+		y *= factor;
+	}
+
 	@Override
 	public int compareTo(GridPoint o) {
 		if (x != o.x) return ((Integer)x).compareTo(o.x);

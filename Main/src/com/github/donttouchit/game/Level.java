@@ -5,21 +5,48 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.GridPoint;
 
-import java.awt.*;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public final class Level implements ActionListener {
-	private List<LevelObject> levelObjects = new ArrayList<LevelObject>();
-	private Group group = new Group();
-	private boolean[][] passable;
-	private int columns, rows;
+	private final List<LevelObject> levelObjects = new ArrayList<LevelObject>();
+	private final Group group = new Group();
+	private final boolean[][] passable;
+	private final int columns, rows;
 	private boolean inAction = false;
-	private GridPoint enterPoint;
-	private GridPoint exitPoint;
+	private final GridPoint enterPoint;
+	private final GridPoint exitPoint;
 	public static final float CELL_SIZE = 64;
+
+	public static class Specification {
+		private ArrayList<LevelObject.Specification> levelObjectsSpecifications = new ArrayList<LevelObject.Specification>();
+		private boolean[][] passable;
+		private int columns, rows;
+		private GridPoint enterPoint;
+		private GridPoint exitPoint;
+	}
+
+	public Specification getSpecification() {
+		Specification specification = new Specification();
+
+		for (LevelObject levelObject : levelObjects) {
+			specification.levelObjectsSpecifications.add(levelObject.getSpecification());
+		}
+
+		specification.columns = columns;
+		specification.rows = rows;
+		specification.enterPoint = enterPoint;
+		specification.exitPoint = exitPoint;
+		specification.passable = new boolean[columns][rows];
+		for (int index = 0; index < columns; ++index) {
+			System.arraycopy(passable[index], 0, specification.passable[index], 0, rows);
+		}
+
+		return specification;
+	}
 
 	public Level(int columns, int rows, GridPoint enterPoint, GridPoint exitPoint) {
 		this.columns = columns;
@@ -53,12 +80,17 @@ public final class Level implements ActionListener {
 		group.addActor(board);
 	}
 
-	public Level(Specification specification) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-		columns = specification.columns;
-		rows = specification.rows;
-		passable = specification.passable;
+	public Level(Specification specification) throws NoSuchMethodException, IllegalAccessException,
+			InvocationTargetException, InstantiationException {
+		this(specification.columns, specification.rows, specification.enterPoint, specification.exitPoint);
+		for (int index = 0; index < columns; ++index) {
+			System.arraycopy(specification.passable[index], 0, passable[index], 0, rows);
+		}
+
 		for (LevelObject.Specification objectSpecification : specification.levelObjectsSpecifications) {
-			addLevelObject((LevelObject) objectSpecification.getClass().getEnclosingClass().getConstructor(LevelObject.Specification.class).newInstance(this, objectSpecification));
+			Class specClass = LevelObject.Specification.class;
+			Constructor constructor = objectSpecification.getClass().getEnclosingClass().getConstructor(specClass);
+			addLevelObject((LevelObject) constructor.newInstance(objectSpecification));
 		}
 	}
 
@@ -183,13 +215,5 @@ public final class Level implements ActionListener {
 
 	public GridPoint getExitPoint() {
 		return exitPoint;
-	}
-
-	public static class Specification {
-		private List<LevelObject.Specification> levelObjectsSpecifications = new ArrayList<LevelObject.Specification>();
-		private boolean[][] passable;
-		private int columns, rows;
-		private GridPoint enterPoint;
-		private GridPoint exitPoint;
 	}
 }

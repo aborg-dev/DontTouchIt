@@ -12,6 +12,12 @@ public class Pedestal extends LevelObject {
 		protected Dye dye;
 	}
 
+	public Specification getSpecification() {
+		Specification specification = new Specification();
+		specification.dye = dye;
+		return specification;
+	}
+
 	public Pedestal(Dye dye, int column, int row) {
 		super(column, row);
 		this.dye = dye;

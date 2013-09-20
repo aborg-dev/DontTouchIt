@@ -37,6 +37,14 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 		protected Dye dye;
 	}
 
+	public Specification getSpecification() {
+		Specification specification = new Specification();
+		specification.direction = direction;
+		specification.rotationSpeed = rotationSpeed;
+		specification.dye = dye;
+		return specification;
+	}
+
 	public Arrow(Dye dye, int column, int row, Direction direction, int rotationSpeed) {
 		super(column, row);
 		if (direction == Direction.NONE) {

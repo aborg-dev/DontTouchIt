@@ -23,6 +23,12 @@ public abstract class Ball extends LevelObject {
 		protected Dye dye;
 	}
 
+	public Specification getSpecification() {
+		Specification specification = new Specification();
+		specification.dye = dye;
+		return specification;
+	}
+
 	public Ball(Dye dye, int column, int row) {
 		super(column, row);
 		this.dye = dye;
@@ -129,8 +135,7 @@ public abstract class Ball extends LevelObject {
 			return false;
 		}
 		GridPoint p = direction.getPoint();
-		p.x += getColumn();
-		p.y += getRow();
+		p.add(getColumn(), getRow());
 		return !getLevel().isPassable(p.x, p.y);
 	}
 
@@ -139,8 +144,7 @@ public abstract class Ball extends LevelObject {
 			return true;
 		}
 		GridPoint p = direction.getPoint();
-		p.x += getColumn();
-		p.y += getRow();
+		p.add(getColumn(), getRow());
 		return getLevel().isEmpty(p.x, p.y);
 	}
 

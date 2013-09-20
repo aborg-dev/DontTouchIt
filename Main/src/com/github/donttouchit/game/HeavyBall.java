@@ -5,7 +5,11 @@ import com.github.donttouchit.game.properties.Dye;
 public class HeavyBall extends Ball {
 
 	public static class Specification extends Ball.Specification {
+	}
 
+	public Specification getSpecification() {
+		Specification specification = new Specification();
+		return specification;
 	}
 
 	public HeavyBall(Dye dye, int column, int row) {

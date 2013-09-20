@@ -10,14 +10,20 @@ import com.github.donttouchit.geom.GridPoint;
 
 public class PressurePlate extends LevelObject implements ActionListener {
 	private final Dye dye;
-	private static final float PLATE_WIDTH = 20;
-	private static final float PLATE_HEIGHT = 20;
+	private static final float PLATE_WIDTH = 40;
+	private static final float PLATE_HEIGHT = 40;
 
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 	private boolean pressed = false;
 
 	public static class Specification extends LevelObject.Specification {
 		protected Dye dye;
+	}
+
+	public Specification getSpecification() {
+		Specification specification = new Specification();
+		specification.dye = dye;
+		return specification;
 	}
 
 	public PressurePlate(Dye dye, int column, int row) {

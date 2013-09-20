@@ -4,8 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.github.donttouchit.geom.GridPoint;
 
-import java.awt.*;
-
 public class LevelObject extends Actor {
 	private Level level;
 	private int column = 0, row = 0;
@@ -20,6 +18,13 @@ public class LevelObject extends Actor {
 	public static class Specification {
 		protected int column;
 		protected int row;
+	}
+
+	public Specification getSpecification() {
+		Specification specification = new Specification();
+		specification.column = column;
+		specification.row = row;
+		return specification;
 	}
 
 	public LevelObject(Specification specification) {

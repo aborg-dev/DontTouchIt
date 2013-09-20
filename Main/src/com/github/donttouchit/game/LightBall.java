@@ -13,7 +13,11 @@ public class LightBall extends Ball {
 	private int health = 3;
 
 	public static class Specification extends Ball.Specification {
+	}
 
+	public Specification getSpecification() {
+		Specification specification = new Specification();
+		return specification;
 	}
 
 	public LightBall(Dye dye, int column, int row) {
