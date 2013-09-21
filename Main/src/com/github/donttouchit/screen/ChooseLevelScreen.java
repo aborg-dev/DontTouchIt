@@ -1,12 +1,18 @@
 package com.github.donttouchit.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.donttouchit.DontTouchIt;
+import com.github.donttouchit.utils.FileUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +23,37 @@ public class ChooseLevelScreen extends BasicScreen {
 
 	public ChooseLevelScreen(DontTouchIt game) {
 		super(game);
+
+		TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+		style.font = Fonts.menuFont;
+		style.downFontColor = Color.ORANGE;
+		style.fontColor = Color.YELLOW;
+
+		ArrayList<String> levelsFilenames = FileUtils.getLevelsList("./");
+		for(final String filename: levelsFilenames) {
+			TextButton levelButton = new TextButton(filename, style);
+			levelButton.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					try {
+						getGame().setScreen(new GameScreen(getGame(), FileUtils.loadLevel(filename)));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			levelButtons.add(levelButton);
+		}
+
 		/**
 		 * Add buttons to the list
 		 */
 		for (Button button : levelButtons) {
 			button.pad(100);
+			buttonGroup.addActor(button);
 		}
+
+		stage.addActor(buttonGroup);
 	}
 
 	@Override

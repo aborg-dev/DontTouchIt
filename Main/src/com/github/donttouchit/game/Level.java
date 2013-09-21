@@ -88,16 +88,16 @@ public final class Level implements ActionListener {
 		}
 
 		for (LevelObject.Specification objectSpecification : specification.levelObjectsSpecifications) {
-			Class specClass = LevelObject.Specification.class;
+			Class specClass = objectSpecification.getClass();
 			Constructor constructor = objectSpecification.getClass().getEnclosingClass().getConstructor(specClass);
 			addLevelObject((LevelObject) constructor.newInstance(objectSpecification));
 		}
 	}
 
 	public void addLevelObject(LevelObject levelObject) {
-		levelObject.setLevel(this);
 		group.addActor(levelObject);
 		levelObjects.add(levelObject);
+		levelObject.setLevel(this);
 	}
 
 	@Override

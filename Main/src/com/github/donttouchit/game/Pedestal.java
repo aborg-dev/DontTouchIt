@@ -15,6 +15,8 @@ public class Pedestal extends LevelObject {
 	public Specification getSpecification() {
 		Specification specification = new Specification();
 		specification.dye = dye;
+		specification.column = getColumn();
+		specification.row = getRow();
 		return specification;
 	}
 

@@ -23,6 +23,8 @@ public class PressurePlate extends LevelObject implements ActionListener {
 	public Specification getSpecification() {
 		Specification specification = new Specification();
 		specification.dye = dye;
+		specification.column = getColumn();
+		specification.row = getRow();
 		return specification;
 	}
 

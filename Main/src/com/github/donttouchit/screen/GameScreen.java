@@ -1,6 +1,7 @@
 package com.github.donttouchit.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,6 +16,12 @@ import com.github.donttouchit.game.*;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.Direction;
 import com.github.donttouchit.geom.GridPoint;
+import com.github.donttouchit.utils.FileUtils;
+
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GameScreen extends BasicScreen {
 	private Stage stage;
@@ -38,10 +45,10 @@ public class GameScreen extends BasicScreen {
 		Gdx.input.setInputProcessor(stage);
 	}
 
-	public GameScreen(DontTouchIt game) {
+	public GameScreen(DontTouchIt game, Level level) {
 		super(game);
+		this.level = level;
 		stage = new Stage();
-		level = new Level(12, 8, new GridPoint(0, 6), new GridPoint(6, 6));
 
 		SpriteDrawable sprite = new SpriteDrawable(new Sprite(new Texture("restart.png")));
 		restart = new ImageButton(sprite);
@@ -53,18 +60,6 @@ public class GameScreen extends BasicScreen {
 				Gdx.app.log("Restart button", "Clicked");
 			}
 		});
-
-		level.addLevelObject(new PressurePlate(Dye.GREEN, 3, 0));
-		level.addLevelObject(new ImaginaryWall(Dye.GREEN, 4, 0));
-
-		level.addLevelObject(new Arrow(Dye.GREEN, 2, 2, Direction.LEFT, 1));
-		level.addLevelObject(new Arrow(Dye.GREEN, 4, 2, Direction.BOTTOM, 2));
-
-		level.addLevelObject(new Pedestal(Dye.RED, 3, 3));
-		level.addLevelObject(new Pedestal(Dye.BLUE, 7, 4));
-
-		level.addLevelObject(new HeavyBall(Dye.RED, 1, 1));
-		level.addLevelObject(new LightBall(Dye.BLUE, 1, 5));
 
 		stage.addActor(level.getGroup());
 		stage.addActor(restart);

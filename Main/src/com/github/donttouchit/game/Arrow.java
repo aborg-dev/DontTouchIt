@@ -42,6 +42,8 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 		specification.direction = direction;
 		specification.rotationSpeed = rotationSpeed;
 		specification.dye = dye;
+		specification.column = getColumn();
+		specification.row = getRow();
 		return specification;
 	}
 

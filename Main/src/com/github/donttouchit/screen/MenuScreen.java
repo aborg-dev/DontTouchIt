@@ -16,6 +16,7 @@ public class MenuScreen extends BasicScreen {
 	private VerticalGroup buttonGroup = new VerticalGroup();
 	private Button playButton;
 	private Button exitButton;
+	private Button chooseLevelButton;
 
 	public MenuScreen(DontTouchIt game) {
 		super(game);
@@ -24,16 +25,26 @@ public class MenuScreen extends BasicScreen {
 		style.downFontColor = Color.ORANGE;
 		style.fontColor = Color.YELLOW;
 		playButton = new TextButton("Play", style);
+		chooseLevelButton = new TextButton("Choose Level", style);
 		exitButton = new TextButton("Exit", style);
 
 		stage.addActor(buttonGroup);
 		buttonGroup.addActor(playButton);
+		buttonGroup.addActor(chooseLevelButton);
 		buttonGroup.addActor(exitButton);
 
 		playButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				getGame().setScreen(new GameScreen(getGame()));
+//				We should start from the last level, player has played.
+//				getGame().setScreen(new GameScreen(getGame()));
+			}
+		});
+
+		chooseLevelButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				getGame().setScreen(new ChooseLevelScreen(getGame()));
 			}
 		});
 

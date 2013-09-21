@@ -17,6 +17,9 @@ public class LightBall extends Ball {
 
 	public Specification getSpecification() {
 		Specification specification = new Specification();
+		specification.dye = dye;
+		specification.column = getColumn();
+		specification.row = getRow();
 		return specification;
 	}
 
@@ -24,7 +27,7 @@ public class LightBall extends Ball {
 		super(dye, column, row);
 	}
 
-	public LightBall(Ball.Specification specification) {
+	public LightBall(Specification specification) {
 		this(specification.dye, specification.column, specification.row);
 	}
 
