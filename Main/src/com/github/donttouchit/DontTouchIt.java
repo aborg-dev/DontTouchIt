@@ -33,7 +33,6 @@ public class DontTouchIt extends Game {
 		Level level = new Level(columns, rows, enter, exit);
 		Json json = new Json(JsonWriter.OutputType.json);
 		Level.Specification specification = json.fromJson(Level.Specification.class, json.prettyPrint(level.getSpecification()));
-
 		System.err.println(json.prettyPrint(specification));
 
 		setScreen(new MenuScreen(this));

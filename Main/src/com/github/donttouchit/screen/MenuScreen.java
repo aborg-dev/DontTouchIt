@@ -50,8 +50,8 @@ public class MenuScreen extends BasicScreen {
 	@Override
 	public void resize(int width, int height) {
 		stage.setViewport(width, height, true);
-		float x = (Gdx.graphics.getWidth() - buttonGroup.getWidth()) / 2;
-		float y = (Gdx.graphics.getHeight() - buttonGroup.getHeight()) / 2;
+		float x = (width - buttonGroup.getWidth()) / 2;
+		float y = (height - buttonGroup.getHeight()) / 2;
 		buttonGroup.setPosition(x, y);
 	}
 
