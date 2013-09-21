@@ -1,7 +1,6 @@
 package com.github.donttouchit.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,22 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.Json;
 import com.github.donttouchit.DontTouchIt;
 import com.github.donttouchit.game.*;
-import com.github.donttouchit.game.properties.Dye;
-import com.github.donttouchit.geom.Direction;
-import com.github.donttouchit.geom.GridPoint;
-import com.github.donttouchit.utils.FileUtils;
-
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class GameScreen extends BasicScreen {
 	private Stage stage;
 	private Level level;
+	private Level.Specification levelSpecification;
 	private ImageButton restart;
 
 	@Override
@@ -48,6 +38,7 @@ public class GameScreen extends BasicScreen {
 	public GameScreen(DontTouchIt game, Level level) {
 		super(game);
 		this.level = level;
+		levelSpecification = level.getSpecification();
 		stage = new Stage();
 
 		SpriteDrawable sprite = new SpriteDrawable(new Sprite(new Texture("restart.png")));
@@ -58,6 +49,11 @@ public class GameScreen extends BasicScreen {
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 				Gdx.app.log("Restart button", "Clicked");
+				try {
+					getGame().setScreen(new GameScreen(getGame(), new Level(levelSpecification)));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
