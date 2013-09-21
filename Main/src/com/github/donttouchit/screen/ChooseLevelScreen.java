@@ -36,7 +36,9 @@ public class ChooseLevelScreen extends BasicScreen {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
 					try {
-						getGame().setScreen(new GameScreen(getGame(), FileUtils.loadLevel(filename)));
+						GameScreen gameScreen = new GameScreen(getGame());
+						gameScreen.setLevel(FileUtils.loadLevel(filename));
+						getGame().setScreen(gameScreen);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

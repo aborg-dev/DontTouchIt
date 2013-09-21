@@ -35,10 +35,8 @@ public class GameScreen extends BasicScreen {
 		Gdx.input.setInputProcessor(stage);
 	}
 
-	public GameScreen(DontTouchIt game, Level level) {
+	public GameScreen(DontTouchIt game) {
 		super(game);
-		this.level = level;
-		levelSpecification = level.getSpecification();
 		stage = new Stage();
 
 		SpriteDrawable sprite = new SpriteDrawable(new Sprite(new Texture("restart.png")));
@@ -50,13 +48,18 @@ public class GameScreen extends BasicScreen {
 				super.clicked(event, x, y);
 				Gdx.app.log("Restart button", "Clicked");
 				try {
-					getGame().setScreen(new GameScreen(getGame(), new Level(levelSpecification)));
+					setLevel(new Level(levelSpecification));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
 
+	public void setLevel(Level level) {
+		stage.clear();
+		this.level = level;
+		levelSpecification = level.getSpecification();
 		stage.addActor(level.getGroup());
 		stage.addActor(restart);
 	}
