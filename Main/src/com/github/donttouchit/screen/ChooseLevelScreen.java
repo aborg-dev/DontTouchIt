@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.donttouchit.DontTouchIt;
 import com.github.donttouchit.utils.FileUtils;
+import com.github.donttouchit.utils.FontUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class ChooseLevelScreen extends BasicScreen {
 		super(game);
 
 		TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-		style.font = Fonts.menuFont;
+		style.font = FontUtils.menuFont;
 		style.downFontColor = Color.ORANGE;
 		style.fontColor = Color.YELLOW;
 
@@ -36,9 +36,8 @@ public class ChooseLevelScreen extends BasicScreen {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
 					try {
-						GameScreen gameScreen = new GameScreen(getGame());
-						gameScreen.setLevel(FileUtils.loadLevel(filename));
-						getGame().setScreen(gameScreen);
+						getGame().getGameScreen().setLevel(FileUtils.loadLevel(filename));
+						getGame().setScreen(getGame().getGameScreen());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -73,7 +72,7 @@ public class ChooseLevelScreen extends BasicScreen {
 
 	@Override
 	public void show() {
-		System.err.println("Showing MenuScreen");
+		super.show();
 		Gdx.input.setInputProcessor(stage);
 	}
 

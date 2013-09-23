@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.github.donttouchit.DontTouchIt;
-import com.github.donttouchit.game.*;
+import com.github.donttouchit.game.Level;
 
 public class GameScreen extends BasicScreen {
 	private Stage stage;
@@ -31,7 +31,7 @@ public class GameScreen extends BasicScreen {
 
 	@Override
 	public void show() {
-		System.err.println("Showing GameScreen");
+		super.show();
 		Gdx.input.setInputProcessor(stage);
 	}
 

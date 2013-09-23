@@ -10,27 +10,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.donttouchit.DontTouchIt;
+import com.github.donttouchit.utils.FontUtils;
 
 public class MenuScreen extends BasicScreen {
 	private Stage stage = new Stage();
 	private VerticalGroup buttonGroup = new VerticalGroup();
 	private Button playButton;
-	private Button exitButton;
 	private Button chooseLevelButton;
+	private Button exitButton;
+	private Button editorButton;
 
 	public MenuScreen(DontTouchIt game) {
 		super(game);
 		TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-		style.font = Fonts.menuFont;
+		style.font = FontUtils.menuFont;
 		style.downFontColor = Color.ORANGE;
 		style.fontColor = Color.YELLOW;
 		playButton = new TextButton("Play", style);
 		chooseLevelButton = new TextButton("Choose Level", style);
+		editorButton = new TextButton("Editor", style);
 		exitButton = new TextButton("Exit", style);
 
 		stage.addActor(buttonGroup);
 		buttonGroup.addActor(playButton);
 		buttonGroup.addActor(chooseLevelButton);
+		buttonGroup.addActor(editorButton);
 		buttonGroup.addActor(exitButton);
 
 		playButton.addListener(new ClickListener() {
@@ -44,7 +48,15 @@ public class MenuScreen extends BasicScreen {
 		chooseLevelButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				getGame().setScreen(new ChooseLevelScreen(getGame()));
+
+				getGame().setScreen(getGame().getChooseLevelScreen());
+			}
+		});
+
+		editorButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				getGame().setScreen(getGame().getEditorScreen());
 			}
 		});
 
@@ -73,7 +85,7 @@ public class MenuScreen extends BasicScreen {
 
 	@Override
 	public void show() {
-		System.err.println("Showing MenuScreen");
+		super.show();
 		Gdx.input.setInputProcessor(stage);
 	}
 

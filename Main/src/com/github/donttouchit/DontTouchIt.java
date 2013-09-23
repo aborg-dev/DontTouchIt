@@ -1,20 +1,21 @@
 package com.github.donttouchit;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonWriter;
 import com.github.donttouchit.game.*;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.Direction;
 import com.github.donttouchit.geom.GridPoint;
+import com.github.donttouchit.screen.ChooseLevelScreen;
+import com.github.donttouchit.screen.editor.EditorScreen;
+import com.github.donttouchit.screen.GameScreen;
 import com.github.donttouchit.screen.MenuScreen;
 import com.github.donttouchit.utils.FileUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class DontTouchIt extends Game {
+	private MenuScreen menuScreen;
+	private ChooseLevelScreen chooseLevelScreen;
+	private EditorScreen editorScreen;
+	private GameScreen gameScreen;
 
 	public void createDefaultLevel() {
 		Level level = new Level(12, 8, new GridPoint(0, 6), new GridPoint(6, 6));
@@ -38,6 +39,26 @@ public class DontTouchIt extends Game {
 	@Override
 	public void create() {
 		createDefaultLevel();
-		setScreen(new MenuScreen(this));
+		menuScreen = new MenuScreen(this);
+		chooseLevelScreen = new ChooseLevelScreen(this);
+		editorScreen = new EditorScreen(this);
+		gameScreen = new GameScreen(this);
+		setScreen(menuScreen);
+	}
+
+	public MenuScreen getMenuScreen() {
+		return menuScreen;
+	}
+
+	public ChooseLevelScreen getChooseLevelScreen() {
+		return chooseLevelScreen;
+	}
+
+	public EditorScreen getEditorScreen() {
+		return editorScreen;
+	}
+
+	public GameScreen getGameScreen() {
+		return gameScreen;
 	}
 }

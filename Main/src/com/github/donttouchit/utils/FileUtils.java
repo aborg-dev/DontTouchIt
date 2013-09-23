@@ -22,7 +22,7 @@ public class FileUtils {
 	}
 
 	public static void saveLevel(Level level, String filename) {
-		Gdx.files.external(filename).writeString(json.toJson(level.getSpecification()), false);
+		Gdx.files.external(filename).writeString(json.prettyPrint(level.getSpecification()), false);
 	}
 
 	public static Level loadLevel(String filename) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {

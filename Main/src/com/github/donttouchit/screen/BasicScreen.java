@@ -1,5 +1,6 @@
 package com.github.donttouchit.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.github.donttouchit.DontTouchIt;
 
@@ -33,6 +34,7 @@ public abstract class BasicScreen implements Screen {
 
 	@Override
 	public void show() {
+		Gdx.app.log(getClass().getSimpleName(), "showing");
 	}
 
 	@Override
