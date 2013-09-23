@@ -39,7 +39,7 @@ public class GameScreen extends BasicScreen {
 		super(game);
 		stage = new Stage();
 
-		SpriteDrawable sprite = new SpriteDrawable(new Sprite(new Texture("restart.png")));
+		SpriteDrawable sprite = new SpriteDrawable(new Sprite(new Texture("resources/restart.png")));
 		restart = new ImageButton(sprite);
 		restart.pack();
 		restart.addListener(new ClickListener() {

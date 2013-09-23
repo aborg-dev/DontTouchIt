@@ -55,7 +55,7 @@ public class EditorScreen extends BasicScreen {
 		style.scrollStyle = scrollPaneStyle;
 		style.listStyle = listStyle;
 
-		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+		Skin skin = new Skin(Gdx.files.internal("resources/uiskin.json"));
 
 		Object[] items = {1000, 2, 3, 4, 5, 6, 7, 800};
 		SelectBox selectBox = new SelectBox(items, skin);

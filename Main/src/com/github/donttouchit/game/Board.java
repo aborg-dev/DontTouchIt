@@ -13,8 +13,8 @@ import com.github.donttouchit.geom.LevelChecker;
 
 public class Board extends Actor {
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private static final Texture wallTexture = new Texture("wall.png");
-	private static final Texture floorTexture = new Texture("floor.png");
+	private static final Texture wallTexture = new Texture("resources/wall.png");
+	private static final Texture floorTexture = new Texture("resources/floor.png");
 
 	public Level getLevel() {
 		return level;
