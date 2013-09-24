@@ -6,16 +6,21 @@ import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.Direction;
 import com.github.donttouchit.geom.GridPoint;
 import com.github.donttouchit.screen.ChooseLevelScreen;
-import com.github.donttouchit.screen.editor.EditorScreen;
 import com.github.donttouchit.screen.GameScreen;
 import com.github.donttouchit.screen.MenuScreen;
+import com.github.donttouchit.screen.editor.EditorCreateScreen;
+import com.github.donttouchit.screen.editor.EditorMenuScreen;
+import com.github.donttouchit.screen.editor.EditorScreen;
 import com.github.donttouchit.utils.FileUtils;
 
 public class DontTouchIt extends Game {
 	private MenuScreen menuScreen;
 	private ChooseLevelScreen chooseLevelScreen;
-	private EditorScreen editorScreen;
 	private GameScreen gameScreen;
+
+	private EditorScreen editorScreen;
+	private EditorMenuScreen editorMenuScreen;
+	private EditorCreateScreen editorCreateScreen;
 
 	public void createDefaultLevel() {
 		Level level = new Level(12, 8, new GridPoint(0, 6), new GridPoint(6, 6));
@@ -41,8 +46,11 @@ public class DontTouchIt extends Game {
 		createDefaultLevel();
 		menuScreen = new MenuScreen(this);
 		chooseLevelScreen = new ChooseLevelScreen(this);
-		editorScreen = new EditorScreen(this);
 		gameScreen = new GameScreen(this);
+
+		editorScreen = new EditorScreen(this);
+		editorMenuScreen = new EditorMenuScreen(this);
+		editorCreateScreen = new EditorCreateScreen(this);
 		setScreen(menuScreen);
 	}
 
@@ -54,11 +62,19 @@ public class DontTouchIt extends Game {
 		return chooseLevelScreen;
 	}
 
+	public GameScreen getGameScreen() {
+		return gameScreen;
+	}
+
 	public EditorScreen getEditorScreen() {
 		return editorScreen;
 	}
 
-	public GameScreen getGameScreen() {
-		return gameScreen;
+	public EditorMenuScreen getEditorMenuScreen() {
+		return editorMenuScreen;
+	}
+
+	public EditorCreateScreen getEditorCreateScreen() {
+		return editorCreateScreen;
 	}
 }

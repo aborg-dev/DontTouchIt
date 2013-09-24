@@ -1,7 +1,6 @@
 package com.github.donttouchit.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,6 +12,8 @@ import com.github.donttouchit.DontTouchIt;
 import com.github.donttouchit.utils.FontUtils;
 
 public class MenuScreen extends BasicScreen {
+	private static final float PADDING = 10;
+
 	private Stage stage = new Stage();
 	private VerticalGroup buttonGroup = new VerticalGroup();
 	private Button playButton;
@@ -22,14 +23,16 @@ public class MenuScreen extends BasicScreen {
 
 	public MenuScreen(DontTouchIt game) {
 		super(game);
-		TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-		style.font = FontUtils.menuFont;
-		style.downFontColor = Color.ORANGE;
-		style.fontColor = Color.YELLOW;
+		TextButton.TextButtonStyle style = FontUtils.style;
 		playButton = new TextButton("Play", style);
 		chooseLevelButton = new TextButton("Choose Level", style);
 		editorButton = new TextButton("Editor", style);
 		exitButton = new TextButton("Exit", style);
+
+		playButton.pad(PADDING);
+		chooseLevelButton.pad(PADDING);
+		editorButton.pad(PADDING);
+		exitButton.pad(PADDING);
 
 		stage.addActor(buttonGroup);
 		buttonGroup.addActor(playButton);
@@ -56,7 +59,7 @@ public class MenuScreen extends BasicScreen {
 		editorButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				getGame().setScreen(getGame().getEditorScreen());
+				getGame().setScreen(getGame().getEditorMenuScreen());
 			}
 		});
 

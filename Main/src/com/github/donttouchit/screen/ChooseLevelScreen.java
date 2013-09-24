@@ -1,7 +1,6 @@
 package com.github.donttouchit.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,12 +23,9 @@ public class ChooseLevelScreen extends BasicScreen {
 	public ChooseLevelScreen(DontTouchIt game) {
 		super(game);
 
-		TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-		style.font = FontUtils.menuFont;
-		style.downFontColor = Color.ORANGE;
-		style.fontColor = Color.YELLOW;
+		TextButton.TextButtonStyle style = FontUtils.style;
 
-		ArrayList<String> levelsFilenames = FileUtils.getLevelsList("./");
+		ArrayList <String> levelsFilenames = FileUtils.getLevelsList("./");
 		for(final String filename: levelsFilenames) {
 			TextButton levelButton = new TextButton(filename, style);
 			levelButton.addListener(new ClickListener() {

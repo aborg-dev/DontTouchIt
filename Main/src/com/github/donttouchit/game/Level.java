@@ -1,6 +1,7 @@
 package com.github.donttouchit.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.GridPoint;
@@ -19,6 +20,7 @@ public final class Level implements ActionListener {
 	private boolean inAction = false;
 	private final GridPoint enterPoint;
 	private final GridPoint exitPoint;
+	private Vector2 bounds;
 	public static final float CELL_SIZE = 64;
 
 	public static class Specification {
@@ -61,13 +63,7 @@ public final class Level implements ActionListener {
 			throw new IllegalArgumentException("The enter point can not be equal to the exit one");
 		}
 
-		if (Gdx.graphics.getWidth() < group.getWidth() || Gdx.graphics.getHeight() < group.getHeight()) {
-			float xAspect = (Gdx.graphics.getWidth() - CELL_SIZE / 2) / group.getWidth();
-			float yAspect = (Gdx.graphics.getHeight() - CELL_SIZE / 2) / group.getHeight();
-			float aspect = Math.min(xAspect, yAspect);
-			System.err.println(aspect);
-			group.setScale(aspect);
-		}
+		setBounds(new Vector2(Gdx.graphics.getWidth() - 2 * CELL_SIZE, Gdx.graphics.getHeight() - CELL_SIZE));
 
 		passable = new boolean[columns][rows];
 		for (boolean[] array : passable) {
@@ -215,5 +211,20 @@ public final class Level implements ActionListener {
 
 	public GridPoint getExitPoint() {
 		return exitPoint;
+	}
+
+	public Vector2 getBounds() {
+		return bounds;
+	}
+
+	public void setBounds(Vector2 bounds) {
+		this.bounds = bounds;
+		if (true) { // if (Gdx.graphics.getWidth() < group.getWidth() || Gdx.graphics.getHeight() < group.getHeight()) {
+			float xAspect = bounds.x / group.getWidth();
+			float yAspect = bounds.y / group.getHeight();
+			float aspect = Math.min(xAspect, yAspect);
+			System.err.println(aspect);
+			group.setScale(aspect);
+		}
 	}
 }
