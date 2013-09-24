@@ -76,8 +76,9 @@ public class GameScreen extends BasicScreen {
 		super.update(delta);
 		stage.act(delta);
 
-		float x = (Gdx.graphics.getWidth() - level.getGroup().getWidth()) / 2;
-		float y = (Gdx.graphics.getHeight() - level.getGroup().getHeight()) / 2;
-		level.getGroup().setPosition(x, y);
+//		float x = (Gdx.graphics.getWidth() - level.getGroup().getWidth()) / 2;
+//		float y = (Gdx.graphics.getHeight() - level.getGroup().getHeight()) / 2;
+////		level.getGroup().setPosition(x, y);
+//		level.getGroup().setPosition(0, 0);
 	}
 }

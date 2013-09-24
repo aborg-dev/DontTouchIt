@@ -1,7 +1,6 @@
 package com.github.donttouchit.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.GridPoint;
@@ -20,7 +19,7 @@ public final class Level implements ActionListener {
 	private boolean inAction = false;
 	private final GridPoint enterPoint;
 	private final GridPoint exitPoint;
-	private Vector2 bounds;
+	private boolean contentShown = false;
 	public static final float CELL_SIZE = 64;
 
 	public static class Specification {
@@ -57,13 +56,15 @@ public final class Level implements ActionListener {
 		this.exitPoint = exitPoint;
 		group.setWidth(getColumns() * CELL_SIZE);
 		group.setHeight(getRows() * CELL_SIZE);
-		group.setOrigin(group.getWidth() / 2, group.getHeight() / 2);
+//		group.setOrigin(group.getWidth() / 2, group.getHeight() / 2);
 
 		if (enterPoint.equals(exitPoint)) {
 			throw new IllegalArgumentException("The enter point can not be equal to the exit one");
 		}
 
-		setBounds(new Vector2(Gdx.graphics.getWidth() - 2 * CELL_SIZE, Gdx.graphics.getHeight() - CELL_SIZE));
+		float w = Gdx.graphics.getWidth() - 2 * CELL_SIZE;
+		float h = Gdx.graphics.getHeight() - CELL_SIZE;
+		setBounds(CELL_SIZE, CELL_SIZE / 2, w, h);
 
 		passable = new boolean[columns][rows];
 		for (boolean[] array : passable) {
@@ -213,18 +214,24 @@ public final class Level implements ActionListener {
 		return exitPoint;
 	}
 
-	public Vector2 getBounds() {
-		return bounds;
+	public void setBounds(float x, float y, float w, float h) {
+		if (true) { // if (Gdx.graphics.getWidth() < group.getWidth() || Gdx.graphics.getHeight() < group.getHeight()) {
+			float xAspect = w / getGroup().getWidth();
+			float yAspect = h / getGroup().getHeight();
+			float aspect = Math.min(xAspect, yAspect);
+
+			float dx = (w - (getGroup().getWidth() * aspect)) / 2;
+			float dy = (h - (getGroup().getHeight() * aspect)) / 2;
+			getGroup().setPosition(x + dx, y + dy);
+			getGroup().setScale(aspect);
+		}
 	}
 
-	public void setBounds(Vector2 bounds) {
-		this.bounds = bounds;
-		if (true) { // if (Gdx.graphics.getWidth() < group.getWidth() || Gdx.graphics.getHeight() < group.getHeight()) {
-			float xAspect = bounds.x / group.getWidth();
-			float yAspect = bounds.y / group.getHeight();
-			float aspect = Math.min(xAspect, yAspect);
-			System.err.println(aspect);
-			group.setScale(aspect);
-		}
+	public boolean isContentShown() {
+		return contentShown;
+	}
+
+	public void setContentShown(boolean contentShown) {
+		this.contentShown = contentShown;
 	}
 }
