@@ -30,7 +30,7 @@ public class EditorScreen extends BasicScreen {
 
 	private final Stage levelStage = new Stage();
 	private final Stage controlsStage = new Stage();
-	private final Palette palette = new Palette();
+	private final Palette palette = new Palette(){};
 	private EditingArea editingArea = new EditingArea() {
 		private boolean placingWalls = false;
 

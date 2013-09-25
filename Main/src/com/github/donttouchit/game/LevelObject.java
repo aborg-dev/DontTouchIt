@@ -1,8 +1,11 @@
 package com.github.donttouchit.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.github.donttouchit.geom.GridPoint;
+
+import java.lang.reflect.Constructor;
 
 public class LevelObject extends Actor {
 	private Level level;
@@ -18,6 +21,18 @@ public class LevelObject extends Actor {
 	public static class Specification {
 		protected int column;
 		protected int row;
+
+		public final LevelObject createLevelObject() {
+			Class specClass = getClass();
+			Constructor constructor = null;
+			try {
+				constructor = this.getClass().getEnclosingClass().getConstructor(specClass);
+				return (LevelObject) constructor.newInstance(this);
+			} catch (Exception e) {
+				Gdx.app.error("Level loading", "Specification is invalid. Null is returned.");
+				return null;
+			}
+		}
 	}
 
 	public Specification getSpecification() {

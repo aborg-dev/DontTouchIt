@@ -6,8 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Palette extends Actor {
-	private List<Brush> brushes = new ArrayList<Brush>();
+public abstract class Palette extends Actor {
+	private List<BrushType> brushTypes = new ArrayList<BrushType>();
+	private int currentBrush = 0;
 
 	public Palette() {
 	}
@@ -15,5 +16,9 @@ public class Palette extends Actor {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+	}
+
+	public BrushType getBrush() {
+		return null;
 	}
 }

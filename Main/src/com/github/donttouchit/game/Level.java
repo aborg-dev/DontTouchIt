@@ -5,8 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.GridPoint;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,17 +75,14 @@ public final class Level implements ActionListener {
 		group.addActor(board);
 	}
 
-	public Level(Specification specification) throws NoSuchMethodException, IllegalAccessException,
-			InvocationTargetException, InstantiationException {
+	public Level(Specification specification) {
 		this(specification.columns, specification.rows, specification.enterPoint, specification.exitPoint);
 		for (int index = 0; index < columns; ++index) {
 			System.arraycopy(specification.passable[index], 0, passable[index], 0, rows);
 		}
 
 		for (LevelObject.Specification objectSpecification : specification.levelObjectsSpecifications) {
-			Class specClass = objectSpecification.getClass();
-			Constructor constructor = objectSpecification.getClass().getEnclosingClass().getConstructor(specClass);
-			addLevelObject((LevelObject) constructor.newInstance(objectSpecification));
+			addLevelObject(objectSpecification.createLevelObject());
 		}
 	}
 
