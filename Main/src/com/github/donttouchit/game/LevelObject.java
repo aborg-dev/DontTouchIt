@@ -8,7 +8,7 @@ import com.github.donttouchit.geom.GridPoint;
 
 import java.lang.reflect.Constructor;
 
-public abstract class LevelObject extends Actor {
+public abstract class LevelObject extends Actor implements Comparable<LevelObject> {
 	private Dye dye;
 	private Level level;
 	private int column = 0, row = 0;
@@ -39,7 +39,14 @@ public abstract class LevelObject extends Actor {
 		}
 	}
 
+	@Override
+	public final int compareTo(LevelObject o) {
+		return getDepth().compareTo(o.getDepth());
+	}
+
 	public abstract Specification getSpecification();
+
+	public abstract Integer getDepth();
 
 	public LevelObject(Specification specification) {
 		this(specification.column, specification.row, specification.dye);

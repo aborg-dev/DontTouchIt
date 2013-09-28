@@ -17,12 +17,18 @@ public class Pedestal extends LevelObject {
 		Brush.registerBrush(specification);
 	}
 
+	@Override
 	public Specification getSpecification() {
 		Specification specification = new Specification();
 		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
+	}
+
+	@Override
+	public Integer getDepth() {
+		return 1;
 	}
 
 	public Pedestal(Dye dye, int column, int row) {

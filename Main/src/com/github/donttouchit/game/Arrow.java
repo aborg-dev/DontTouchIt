@@ -44,6 +44,7 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 		Brush.registerBrush(specification);
 	}
 
+	@Override
 	public Specification getSpecification() {
 		Specification specification = new Specification();
 		specification.direction = direction;
@@ -52,6 +53,11 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
+	}
+
+	@Override
+	public Integer getDepth() {
+		return 1;
 	}
 
 	public Arrow(Dye dye, int column, int row, Direction direction, int rotationSpeed) {

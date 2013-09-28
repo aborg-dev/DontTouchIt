@@ -21,12 +21,18 @@ public abstract class Ball extends LevelObject {
 	public static class Specification extends LevelObject.Specification {
 	}
 
+	@Override
 	public Specification getSpecification() {
 		Specification specification = new Specification();
 		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
+	}
+
+	@Override
+	public Integer getDepth() {
+		return 2;
 	}
 
 	public Ball(Dye dye, int column, int row) {

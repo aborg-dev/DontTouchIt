@@ -25,12 +25,18 @@ public class PressurePlate extends LevelObject implements ActionListener {
 		Brush.registerBrush(specification);
 	}
 
+	@Override
 	public Specification getSpecification() {
 		Specification specification = new Specification();
 		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
+	}
+
+	@Override
+	public Integer getDepth() {
+		return 1;
 	}
 
 	public PressurePlate(Dye dye, int column, int row) {

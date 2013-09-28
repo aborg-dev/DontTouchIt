@@ -7,6 +7,7 @@ import com.github.donttouchit.geom.GridPoint;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public final class Level implements ActionListener {
@@ -80,8 +81,15 @@ public final class Level implements ActionListener {
 			System.arraycopy(specification.passable[index], 0, passable[index], 0, rows);
 		}
 
+		List<LevelObject> levelObjectList = new ArrayList<LevelObject>();
 		for (LevelObject.Specification objectSpecification : specification.levelObjectsSpecifications) {
-			addLevelObject(objectSpecification.createLevelObject());
+			levelObjectList.add(objectSpecification.createLevelObject());
+		}
+
+		Collections.sort(levelObjectList);
+
+		for (LevelObject levelObject : levelObjectList) {
+			addLevelObject(levelObject);
 		}
 	}
 

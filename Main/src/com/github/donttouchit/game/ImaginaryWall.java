@@ -23,12 +23,18 @@ public class ImaginaryWall extends LevelObject implements ChangeListener {
 		Brush.registerBrush(specification);
 	}
 
+	@Override
 	public Specification getSpecification() {
 		Specification specification = new Specification();
 		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
+	}
+
+	@Override
+	public Integer getDepth() {
+		return 3;
 	}
 
 	public ImaginaryWall(Dye dye, int column, int row) {
