@@ -13,7 +13,7 @@ public abstract class EditingArea extends Actor {
 		addListener(new ActorGestureListener() {
 			@Override
 			public void tap(InputEvent event, float x, float y, int count, int button) {
-				put((int)(x / Level.CELL_SIZE), (int)(y / Level.CELL_SIZE));
+				put((int)(x / Level.CELL_SIZE), (int)(y / Level.CELL_SIZE), false);
 			}
 
 			@Override
@@ -30,7 +30,7 @@ public abstract class EditingArea extends Actor {
 			@Override
 			public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
 				if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight()) {
-					put((int)(x / Level.CELL_SIZE), (int)(y / Level.CELL_SIZE));
+					put((int)(x / Level.CELL_SIZE), (int)(y / Level.CELL_SIZE), true);
 				}
 			}
 		});
@@ -43,7 +43,7 @@ public abstract class EditingArea extends Actor {
 
 	public abstract void start(int column, int row);
 
-	public abstract void put(int column, int row);
+	public abstract void put(int column, int row, boolean moving);
 
 	public abstract void change(int column, int row);
 }

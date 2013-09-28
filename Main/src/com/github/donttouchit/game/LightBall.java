@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.Direction;
+import com.github.donttouchit.screen.editor.Brush;
 
 public class LightBall extends Ball {
 	private static final float HEALTH_POINT_SIZE = 6;
@@ -15,9 +16,16 @@ public class LightBall extends Ball {
 	public static class Specification extends Ball.Specification {
 	}
 
+	static {
+		Specification specification = new Specification();
+		specification.dye = Dye.GREEN;
+		Brush.registerBrush(specification);
+	}
+
+	@Override
 	public Specification getSpecification() {
 		Specification specification = new Specification();
-		specification.dye = dye;
+		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;

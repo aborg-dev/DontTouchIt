@@ -14,7 +14,7 @@ public class FileUtils {
 
 	public static ArrayList<String> getLevelsList(String directory) {
 		ArrayList<String> levelsFilenames = new ArrayList<String>();
-		FileHandle[] files = Gdx.files.external(directory).list(".lvl");
+		FileHandle[] files = Gdx.files.local(directory).list(".lvl");
 		for(FileHandle file: files) {
 			levelsFilenames.add(file.name());
 		}
@@ -26,6 +26,6 @@ public class FileUtils {
 	}
 
 	public static Level loadLevel(String filename) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-		return new Level(json.fromJson(Level.Specification.class, Gdx.files.external(filename).readString()));
+		return new Level(json.fromJson(Level.Specification.class, Gdx.files.local(filename).readString()));
 	}
 }

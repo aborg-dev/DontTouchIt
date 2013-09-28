@@ -7,21 +7,25 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.github.donttouchit.DontTouchIt;
 import com.github.donttouchit.game.Level;
+import com.github.donttouchit.utils.FontUtils;
 
 public class GameScreen extends BasicScreen {
 	private Stage stage;
 	private Level level;
 	private Level.Specification levelSpecification;
 	private ImageButton restart;
+	private TextButton back = new TextButton("M", FontUtils.style);
 
 	@Override
 	public void resize(int width, int height) {
 		stage.setViewport(width, height, true);
 		restart.setPosition(10, Gdx.graphics.getHeight() - 10 - restart.getHeight());
+		back.setPosition(10, Gdx.graphics.getHeight() - 10 - restart.getHeight() - 64);
 	}
 
 	@Override
@@ -54,6 +58,13 @@ public class GameScreen extends BasicScreen {
 				}
 			}
 		});
+
+		back.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				getGame().setScreen(getGame().getChooseLevelScreen());
+			}
+		});
 	}
 
 	public void setLevel(Level level) {
@@ -62,6 +73,7 @@ public class GameScreen extends BasicScreen {
 		levelSpecification = level.getSpecification();
 		stage.addActor(level.getGroup());
 		stage.addActor(restart);
+		stage.addActor(back);
 	}
 
 	@Override

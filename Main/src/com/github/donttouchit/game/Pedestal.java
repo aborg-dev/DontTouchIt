@@ -3,26 +3,31 @@ package com.github.donttouchit.game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.github.donttouchit.game.properties.Dye;
+import com.github.donttouchit.screen.editor.Brush;
 
 public class Pedestal extends LevelObject {
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private final Dye dye;
 
 	public static class Specification extends LevelObject.Specification {
 		protected Dye dye;
 	}
 
+	static {
+		Specification specification = new Specification();
+		specification.dye = Dye.GREEN;
+		Brush.registerBrush(specification);
+	}
+
 	public Specification getSpecification() {
 		Specification specification = new Specification();
-		specification.dye = dye;
+		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
 	}
 
 	public Pedestal(Dye dye, int column, int row) {
-		super(column, row);
-		this.dye = dye;
+		super(column, row, dye);
 	}
 
 	public Pedestal(Specification specification) {
@@ -43,14 +48,10 @@ public class Pedestal extends LevelObject {
 		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.setColor(dye.getColor());
+		shapeRenderer.setColor(getDye().getColor());
 		shapeRenderer.rect(getX() + 1, getY() + 1, Level.CELL_SIZE - 1, Level.CELL_SIZE - 1);
 		shapeRenderer.end();
 
 		batch.begin();
-	}
-
-	public Dye getDye() {
-		return dye;
 	}
 }

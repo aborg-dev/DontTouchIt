@@ -11,7 +11,6 @@ import com.github.donttouchit.screen.MenuScreen;
 import com.github.donttouchit.screen.editor.EditorCreateScreen;
 import com.github.donttouchit.screen.editor.EditorMenuScreen;
 import com.github.donttouchit.screen.editor.EditorScreen;
-import com.github.donttouchit.utils.FileUtils;
 
 public class DontTouchIt extends Game {
 	private MenuScreen menuScreen;
@@ -38,7 +37,7 @@ public class DontTouchIt extends Game {
 		level.addLevelObject(new HeavyBall(Dye.RED, 1, 1));
 		level.addLevelObject(new LightBall(Dye.BLUE, 1, 5));
 
-		FileUtils.saveLevel(level, "./test.lvl");
+//		FileUtils.saveLevel(level, "./test.lvl");
 	}
 
 	@Override

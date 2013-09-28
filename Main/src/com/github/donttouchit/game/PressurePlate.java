@@ -7,9 +7,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.GridPoint;
+import com.github.donttouchit.screen.editor.Brush;
 
 public class PressurePlate extends LevelObject implements ActionListener {
-	private final Dye dye;
 	private static final float PLATE_WIDTH = 40;
 	private static final float PLATE_HEIGHT = 40;
 
@@ -20,17 +20,22 @@ public class PressurePlate extends LevelObject implements ActionListener {
 		protected Dye dye;
 	}
 
+	static {
+		Specification specification = new Specification();
+		specification.dye = Dye.GREEN;
+		Brush.registerBrush(specification);
+	}
+
 	public Specification getSpecification() {
 		Specification specification = new Specification();
-		specification.dye = dye;
+		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
 	}
 
 	public PressurePlate(Dye dye, int column, int row) {
-		super(column, row);
-		this.dye = dye;
+		super(column, row, dye);
 	}
 
 	public PressurePlate(Specification specification) {
@@ -53,7 +58,7 @@ public class PressurePlate extends LevelObject implements ActionListener {
 
 		// Border
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.setColor(dye.getColor());
+		shapeRenderer.setColor(getDye().getColor());
 		shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 
 		// Inner
@@ -72,7 +77,7 @@ public class PressurePlate extends LevelObject implements ActionListener {
 	public void ballEntered(Ball ball, GridPoint cell) {
 		if (getColumn() == cell.x && getRow() == cell.y) {
 			pressed = true;
-			getLevel().change(dye, "open wall");
+			getLevel().change(getDye(), "open wall");
 		}
 	}
 
@@ -80,7 +85,7 @@ public class PressurePlate extends LevelObject implements ActionListener {
 	public void ballLeft(Ball ball, GridPoint cell) {
 		if (getColumn() == cell.x && getRow() == cell.y) {
 			pressed = false;
-			getLevel().change(dye, "close wall");
+			getLevel().change(getDye(), "close wall");
 		}
 	}
 

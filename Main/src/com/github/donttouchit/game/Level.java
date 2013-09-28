@@ -17,7 +17,6 @@ public final class Level implements ActionListener {
 	private boolean inAction = false;
 	private final GridPoint enterPoint;
 	private final GridPoint exitPoint;
-	private boolean contentShown = false;
 	public static final float CELL_SIZE = 64;
 
 	public static class Specification {
@@ -87,9 +86,24 @@ public final class Level implements ActionListener {
 	}
 
 	public void addLevelObject(LevelObject levelObject) {
+		if (levelObject == null) {
+			return;
+		}
 		group.addActor(levelObject);
 		levelObjects.add(levelObject);
 		levelObject.setLevel(this);
+	}
+
+	public void removeLevelObject(LevelObject levelObject) {
+		if (levelObject == null) {
+			return;
+		}
+		group.removeActor(levelObject);
+		levelObjects.remove(levelObject);
+	}
+
+	public void removeLevelObject(int column, int row) {
+		removeLevelObject(getLevelObject(column, row));
 	}
 
 	@Override
@@ -222,11 +236,13 @@ public final class Level implements ActionListener {
 		}
 	}
 
-	public boolean isContentShown() {
-		return contentShown;
-	}
-
-	public void setContentShown(boolean contentShown) {
-		this.contentShown = contentShown;
+	public LevelObject getLevelObject(int column, int row) {
+		GridPoint p = new GridPoint(column, row);
+		for (LevelObject levelObject : levelObjects) {
+			if (levelObject.getBoardPosition().equals(p)) {
+				return levelObject;
+			}
+		}
+		return null;
 	}
 }

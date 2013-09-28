@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.github.donttouchit.DontTouchIt;
 import com.github.donttouchit.screen.BasicScreen;
+import com.github.donttouchit.utils.FileUtils;
 import com.github.donttouchit.utils.FontUtils;
 
 public class EditorMenuScreen extends BasicScreen {
@@ -16,6 +17,7 @@ public class EditorMenuScreen extends BasicScreen {
 	private final Stage stage = new Stage();
 
 	private VerticalGroup buttonGroup = new VerticalGroup();
+	private TextButton resume;
 	private TextButton create;
 	private TextButton save;
 	private TextButton load;
@@ -24,20 +26,37 @@ public class EditorMenuScreen extends BasicScreen {
 	public EditorMenuScreen(DontTouchIt game) {
 		super(game);
 
+		resume = new TextButton("Resume", FontUtils.style);
 		create = new TextButton("New Level", FontUtils.style);
 		save = new TextButton("Save", FontUtils.style);
 		load = new TextButton("Load", FontUtils.style);
 		back = new TextButton("Back", FontUtils.style);
 
+		resume.pad(PADDING);
 		create.pad(PADDING);
 		save.pad(PADDING);
 		load.pad(PADDING);
 		back.pad(PADDING);
 
+		resume.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				getGame().setScreen(getGame().getEditorScreen());
+			}
+		});
+
 		create.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				getGame().setScreen(getGame().getEditorCreateScreen());
+			}
+		});
+
+		save.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				FileUtils.saveLevel(getGame().getEditorScreen().getEditingLevel(), "./test.lvl");
+				System.err.println("Level should be saved");
 			}
 		});
 
@@ -55,8 +74,14 @@ public class EditorMenuScreen extends BasicScreen {
 	public void show() {
 		super.show();
 		buttonGroup.clearChildren();
+
+		if (getGame().getEditorScreen().getEditingLevel() != null) {
+			buttonGroup.addActor(resume);
+		}
 		buttonGroup.addActor(create);
-		buttonGroup.addActor(save);
+		if (getGame().getEditorScreen().getEditingLevel() != null) {
+			buttonGroup.addActor(save);
+		}
 		buttonGroup.addActor(load);
 		buttonGroup.addActor(back);
 		buttonGroup.pack();

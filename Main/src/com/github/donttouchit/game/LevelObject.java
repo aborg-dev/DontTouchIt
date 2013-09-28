@@ -3,24 +3,28 @@ package com.github.donttouchit.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.GridPoint;
 
 import java.lang.reflect.Constructor;
 
-public class LevelObject extends Actor {
+public abstract class LevelObject extends Actor {
+	private Dye dye;
 	private Level level;
 	private int column = 0, row = 0;
 
-	public LevelObject(int column, int row) {
+	public LevelObject(int column, int row, Dye dye) {
 		setWidth(Level.CELL_SIZE);
 		setHeight(Level.CELL_SIZE);
 		setColumn(column);
 		setRow(row);
+		setDye(dye);
 	}
 
 	public static class Specification {
 		protected int column;
 		protected int row;
+		protected Dye dye;
 
 		public final LevelObject createLevelObject() {
 			Class specClass = getClass();
@@ -35,15 +39,10 @@ public class LevelObject extends Actor {
 		}
 	}
 
-	public Specification getSpecification() {
-		Specification specification = new Specification();
-		specification.column = column;
-		specification.row = row;
-		return specification;
-	}
+	public abstract Specification getSpecification();
 
 	public LevelObject(Specification specification) {
-		this(specification.column, specification.row);
+		this(specification.column, specification.row, specification.dye);
 	}
 
 	public void setBoardPosition(int column, int row) {
@@ -87,5 +86,16 @@ public class LevelObject extends Actor {
 
 	public Vector2 getCenter() {
 		return new Vector2(0.5f * Level.CELL_SIZE, 0.5f * Level.CELL_SIZE);
+	}
+
+	public Dye getDye() {
+		return dye;
+	}
+
+	public void setDye(Dye dye) {
+		this.dye = dye;
+	}
+
+	public void changeParameter() {
 	}
 }

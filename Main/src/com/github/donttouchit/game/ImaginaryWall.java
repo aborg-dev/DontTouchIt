@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.github.donttouchit.game.properties.Dye;
+import com.github.donttouchit.screen.editor.Brush;
 
 public class ImaginaryWall extends LevelObject implements ChangeListener {
 	private static final float WALL_SIZE = 10;
 	private static final float WALL_PADDING = 4;
 
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
-	private final Dye dye;
 	private boolean opened = false;
 	private boolean goingToClose = false;
 
@@ -18,17 +18,22 @@ public class ImaginaryWall extends LevelObject implements ChangeListener {
 		protected Dye dye;
 	}
 
+	static {
+		Specification specification = new Specification();
+		specification.dye = Dye.GREEN;
+		Brush.registerBrush(specification);
+	}
+
 	public Specification getSpecification() {
 		Specification specification = new Specification();
-		specification.dye = dye;
+		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
 	}
 
 	public ImaginaryWall(Dye dye, int column, int row) {
-		super(column, row);
-		this.dye = dye;
+		super(column, row, dye);
 	}
 
 	public ImaginaryWall(Specification specification) {
@@ -46,7 +51,7 @@ public class ImaginaryWall extends LevelObject implements ChangeListener {
 
 	@Override
 	public boolean accept(Dye dye, Object object) {
-		return this.dye == dye && object instanceof String;
+		return getDye() == dye && object instanceof String;
 	}
 
 	@Override
@@ -72,7 +77,7 @@ public class ImaginaryWall extends LevelObject implements ChangeListener {
 		Vector2 center = getCenter();
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.setColor(dye.getColor());
+		shapeRenderer.setColor(getDye().getColor());
 
 		if (!opened) {
 			shapeRenderer.rect(0, WALL_PADDING, Level.CELL_SIZE, WALL_SIZE);

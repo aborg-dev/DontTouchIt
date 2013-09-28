@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.github.donttouchit.game.properties.Dye;
 import com.github.donttouchit.geom.Direction;
 import com.github.donttouchit.geom.GridPoint;
+import com.github.donttouchit.screen.editor.Brush;
 
 
 public class Arrow extends LevelObject implements ActionListener, ChangeListener {
@@ -27,7 +28,6 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 	private final float[] angles = new float[6];
 	private Direction direction;
 	private final int rotationSpeed;
-	private final Dye dye;
 
 	private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
@@ -37,32 +37,39 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 		protected Dye dye;
 	}
 
+	static {
+		Specification specification = new Specification();
+		specification.dye = Dye.GREEN;
+		specification.direction = Direction.TOP;
+		specification.rotationSpeed = 1;
+		Brush.registerBrush(specification);
+	}
+
 	public Specification getSpecification() {
 		Specification specification = new Specification();
 		specification.direction = direction;
 		specification.rotationSpeed = rotationSpeed;
-		specification.dye = dye;
+		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
 	}
 
 	public Arrow(Dye dye, int column, int row, Direction direction, int rotationSpeed) {
-		super(column, row);
+		super(column, row, dye);
 		if (direction == Direction.NONE) {
 			throw new IllegalArgumentException("Direction can not be NONE");
 		}
 
 		this.direction = direction;
 		this.rotationSpeed = rotationSpeed;
-		this.dye = dye;
 
 		final Arrow thisArrow = this;
 		addListener(new ActorGestureListener() {
 			@Override
 			public void tap(InputEvent event, float x, float y, int count, int button) {
 				super.tap(event, x, y, count, button);
-				getLevel().change(thisArrow.dye, "turn");
+				getLevel().change(thisArrow.getDye(), "turn");
 //				thisArrow.direction = thisArrow.direction.plus(1);
 			}
 		});
@@ -102,7 +109,7 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 		buildAngles();
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.setColor(dye.getColor());
+		shapeRenderer.setColor(getDye().getColor());
 		shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height);
 
 		shapeRenderer.triangle(angles[0], angles[1], angles[2], angles[3], angles[4], angles[5]);
@@ -131,7 +138,7 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 
 	@Override
 	public boolean accept(Dye dye, Object object) {
-		return this.dye == dye && object instanceof String;
+		return getDye() == dye && object instanceof String;
 	}
 
 	@Override
@@ -139,6 +146,11 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 		if (((String)object).equals("turn")) {
 			direction = direction.plus(rotationSpeed);
 		}
+	}
+
+	@Override
+	public void changeParameter() {
+		direction = direction.plus(1);
 	}
 }
 

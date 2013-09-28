@@ -17,23 +17,20 @@ public abstract class Ball extends LevelObject {
 	private float dx = 0, dy = 0;
 	private float speedInCells = 3.0f;
 	private Direction moveDirection = Direction.NONE;
-	protected final Dye dye;
 
 	public static class Specification extends LevelObject.Specification {
-		protected Dye dye;
 	}
 
 	public Specification getSpecification() {
 		Specification specification = new Specification();
-		specification.dye = dye;
+		specification.dye = getDye();
 		specification.column = getColumn();
 		specification.row = getRow();
 		return specification;
 	}
 
 	public Ball(Dye dye, int column, int row) {
-		super(column, row);
-		this.dye = dye;
+		super(column, row, dye);
 
 		addListener(new ActorGestureListener() {
 			@Override
@@ -97,7 +94,14 @@ public abstract class Ball extends LevelObject {
 	}
 
 	protected boolean isInHole() {
-		return dye.equals(getLevel().getDye(getColumn(), getRow()));
+		if (getLevel() == null) {
+			return false;
+		} else {
+			return getDye().
+					equals(getLevel()
+							.getDye(getColumn(),
+									getRow()));
+		}
 	}
 
 	@Override
@@ -161,10 +165,6 @@ public abstract class Ball extends LevelObject {
 
 	public void setSpeedInCells(float speedInCells) {
 		this.speedInCells = speedInCells;
-	}
-
-	public Dye getDye() {
-		return dye;
 	}
 
 	public Direction getMoveDirection() {
