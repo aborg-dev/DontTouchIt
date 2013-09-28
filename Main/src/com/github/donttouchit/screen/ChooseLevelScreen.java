@@ -23,43 +23,12 @@ public class ChooseLevelScreen extends BasicScreen {
 
 	public ChooseLevelScreen(DontTouchIt game) {
 		super(game);
-
-		TextButton.TextButtonStyle style = FontUtils.style;
-
-		ArrayList <String> levelFilenames = FileUtils.getLevelsList("./");
-		for(final String filename: levelFilenames) {
-			TextButton levelButton = new TextButton(filename, style);
-			levelButton.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					try {
-						getGame().getGameScreen().setLevel(FileUtils.loadLevel(filename));
-						getGame().setScreen(getGame().getGameScreen());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
-			levelButtons.add(levelButton);
-		}
-
-		levelButtons.add(back);
 		back.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				getGame().setScreen(getGame().getMenuScreen());
 			}
 		});
-
-		System.err.println("Number of levels is: " + levelFilenames.size());
-		/**
-		 * Add buttons to the list
-		 */
-		for (Button button : levelButtons) {
-			button.pad(10);
-			buttonGroup.addActor(button);
-		}
-		buttonGroup.pack();
 		stage.addActor(buttonGroup);
 	}
 
@@ -80,6 +49,32 @@ public class ChooseLevelScreen extends BasicScreen {
 	public void show() {
 		super.show();
 		Gdx.input.setInputProcessor(stage);
+		buttonGroup.clearChildren();
+		levelButtons.clear();
+		ArrayList <String> levelFileNames = FileUtils.getLevelsList("./");
+		for(final String filename: levelFileNames) {
+			TextButton levelButton = new TextButton(filename, FontUtils.style);
+			levelButton.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					try {
+						getGame().getGameScreen().setLevel(FileUtils.loadLevel(filename));
+						getGame().setScreen(getGame().getGameScreen());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			levelButtons.add(levelButton);
+		}
+
+		levelButtons.add(back);
+		for (Button button : levelButtons) {
+			button.pad(10);
+			buttonGroup.addActor(button);
+		}
+
+		buttonGroup.pack();
 	}
 
 	@Override

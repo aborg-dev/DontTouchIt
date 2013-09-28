@@ -55,7 +55,7 @@ public class EditorMenuScreen extends BasicScreen {
 		save.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				FileUtils.saveLevel(getGame().getEditorScreen().getEditingLevel(), "./test.lvl");
+				FileUtils.saveLevel(getGame().getEditorScreen().getEditingLevel(), "test.lvl");
 				System.err.println("Level should be saved");
 			}
 		});
