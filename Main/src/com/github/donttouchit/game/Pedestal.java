@@ -9,7 +9,6 @@ public class Pedestal extends LevelObject {
 	private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 
 	public static class Specification extends LevelObject.Specification {
-		protected Dye dye;
 	}
 
 	static {

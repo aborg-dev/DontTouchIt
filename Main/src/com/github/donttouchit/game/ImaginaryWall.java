@@ -15,7 +15,6 @@ public class ImaginaryWall extends LevelObject implements ChangeListener {
 	private boolean goingToClose = false;
 
 	public static class Specification extends LevelObject.Specification {
-		protected Dye dye;
 	}
 
 	static {

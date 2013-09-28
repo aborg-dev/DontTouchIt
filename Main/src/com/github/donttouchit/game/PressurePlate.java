@@ -17,7 +17,6 @@ public class PressurePlate extends LevelObject implements ActionListener {
 	private boolean pressed = false;
 
 	public static class Specification extends LevelObject.Specification {
-		protected Dye dye;
 	}
 
 	static {

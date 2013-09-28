@@ -34,7 +34,6 @@ public class Arrow extends LevelObject implements ActionListener, ChangeListener
 	public static class Specification extends LevelObject.Specification {
 		protected Direction direction;
 		protected int rotationSpeed;
-		protected Dye dye;
 	}
 
 	static {
